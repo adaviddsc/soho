@@ -1,0 +1,84 @@
+@import "compass";
+body {
+	font-family: "Verdana", "Lucida Sans Unicode", "Arial", "Helvetica Neue", "Helvetica", "sans-serif", "微軟正黑體", "新細明體", "蘋果儷中黑", "小塚ゴシック Pro", "ヒラギノ角ゴ";
+	color: #333333;
+	letter-spacing: 1px;
+}
+.header{
+	background: #000;
+	width: 100%;
+	height: 60px;
+	position: fixed;
+	z-index: 100;
+	.header-left{
+		padding: 4px 0 0 70px;
+		float: left;
+		.logo{
+			width: 115px;
+			img{
+				width: 54px;
+			}
+			
+		}
+	}
+	.header-right{
+		float: right;
+		padding: 15px 30px;
+		.header-btn{
+			color: #000;
+			border: none;
+			@include border-radius(5px);
+			padding: 4px 13px;
+			letter-spacing: 1px;
+			margin-left: 7px;
+			@include transition(all .2s linear);
+			&:hover{
+				background:#fff;
+			}
+		}
+	}
+}
+.header-home{
+	opacity: .8;
+}
+.header-other{
+	opacity: 1;
+}
+.main-home{
+	z-index: 1;
+	height: 100vh;
+	overflow-y: hidden;
+	opacity: 0;
+	@include transition(all 1s linear);
+}
+.main-home-img1{
+	background: url(/assets/home_img1.jpg);
+	@include background-size(cover);
+}
+.main-home-img2{
+	background: url(/assets/home_img2.jpg);
+	@include background-size(cover);
+}
+.main-home-img3{
+	background: url(/assets/home_img3.jpg);
+	@include background-size(cover);
+}
+.main-home-img4{
+	background: url(/assets/home_img4.jpg);
+	@include background-size(cover);
+}
+/*
+$time: afternoon;
+.main-body{
+	@if $time == morning {
+		background: url(/assets/home_img3.jpg);
+	} @else if $time == afternoon {
+		background: url(/assets/home_img3.jpg);
+	} @else {
+		color: grey;
+	}
+	height: 100vh;
+	@include background-size(cover);
+	overflow-y: hidden;
+}
+*/

@@ -9,8 +9,23 @@
 <body>
 
 
-<p class="notice"><%= notice %></p>
-<p class="alert"><%= alert %></p>
+
+<!--<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>-->
+
+
+
+<header class="header header-home">
+	<div class="header-left">
+		<div class="logo">
+			<a href="/"><img src="/assets/logo.png" alt=""></a>
+		</div>
+	</div>
+	<div class="header-right">
+		<a href="/users/sign_in"><button class="header-btn"><%= t("account.login") %></button></a>
+		<a href="/users/sign_in"><button class="header-btn"><%= t("account.regist") %></button></a>
+	</div>
+</header>
 <%= yield %>
 
 </body>
