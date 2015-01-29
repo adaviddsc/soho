@@ -20,3 +20,18 @@ function removeImg(value){
   $('.main-home').removeClass('main-home-img4');
   showImgFun = setTimeout("showImg("+value+")", 100);
 }
+
+
+$(document).on("page:change", function(){
+  /*******警告視窗********/
+  $("#alert-notice,#alert-background").show();
+  $("#alert-close").on("click", function(event) {
+    $("#alert-notice,#alert-background").fadeOut();
+  });
+  /*******警告視窗********/
+
+
+
+
+  
+});
