@@ -1,20 +1,9 @@
-<div class="main-home">
-
-
-
-</div>
-<script>
-$(document).one("page:update", function(){
-  clearTimeout(showImgFun)
-  clearTimeout(removeImgFun)
-  removeImg(1);
-});
-</script>
+<%= render "home/homePage" %>
 
 <% if !(alert || notice) %>
 <script>
 $(document).one("page:update", function(){
-  $('#myModal-login').modal('show');
+  $('#myModal-regist').modal('show');
 });
 </script>
 <% end %>

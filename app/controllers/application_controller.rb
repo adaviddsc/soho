@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
 
 
-  helper_method :resource, :resource_name, :devise_mapping
+  helper_method :resource, :resource_name, :devise_mapping, :resource_class
   def resource_name
     :user
   end
@@ -16,5 +16,9 @@ class ApplicationController < ActionController::Base
 
   def devise_mapping
     @devise_mapping ||= Devise.mappings[:user]
+  end
+
+  def resource_class
+    devise_mapping.to
   end
 end

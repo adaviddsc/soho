@@ -12,6 +12,11 @@ module Soho
     config.time_zone = 'Taipei'
     config.i18n.enforce_available_locales = false
     config.i18n.default_locale = 'zh-TW'
+
+    config.action_view.field_error_proc = Proc.new { |html_tag, instance| 
+      html_tag
+    }  #field_with_errors跑版
+    
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

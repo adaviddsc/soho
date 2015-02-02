@@ -3,6 +3,7 @@
 <head>
   <title>Soho</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
@@ -42,7 +43,7 @@
 
 
 <!-- 登入頁面 -->
-<div class="modal fade" id="myModal-login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade users-dialog" id="myModal-login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -52,27 +53,27 @@
       <div class="modal-body">
         <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
           <div class="field">
-            <%= f.label :email %><br />
+            <%= f.label :email, t("account.email") %><br />
             <%= f.email_field :email, autofocus: true %>
           </div>
 
           <div class="field">
-            <%= f.label :password %><br />
+            <%= f.label :password, t("account.password") %><br />
             <%= f.password_field :password, autocomplete: "off" %>
           </div>
 
           <% if devise_mapping.rememberable? -%>
             <div class="field">
               <%= f.check_box :remember_me %>
-              <%= f.label :remember_me %>
+              <%= f.label :remember_me, t("account.remember_me") %>
             </div>
           <% end -%>
 
           <div class="actions">
-            <%= f.submit "Log in" %>
+            <%= f.submit t("account.login") %>
           </div>
         <% end %>
-
+        
         <%= render "devise/shared/links" %>
       </div>
     </div>
@@ -81,7 +82,7 @@
 <!-- 登入頁面 -->
 
 <!-- 註冊頁面 -->
-<div class="modal fade" id="myModal-regist" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade users-dialog" id="myModal-regist" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -89,39 +90,129 @@
         <h4 class="modal-title" id="myModalLabel"><%= t("account.regist") %></h4>
       </div>
       <div class="modal-body">
-        
-		<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-		  <%= devise_error_messages! %>
+  		<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  		  <div class="field">
+  		    <%= f.label :email, t("account.email") %><br />
+  		    <%= f.email_field :email, autofocus: true %>
+  		  </div>
 
-		  <div class="field">
-		    <%= f.label :email %><br />
-		    <%= f.email_field :email, autofocus: true %>
-		  </div>
+  		  <div class="field">
+  		    <%= f.label :password, t("account.password") %>
+  		    <% if @validatable %>
+  		    <em>(<%= t("account.at_least") %> <%= @minimum_password_length %> <%= t("account.char") %>)</em>
+  		    <% end %><br />
+  		    <%= f.password_field :password, autocomplete: "off" %>
+  		  </div>
 
-		  <div class="field">
-		    <%= f.label :password %>
-		    <% if @validatable %>
-		    <em>(<%= @minimum_password_length %> characters minimum)</em>
-		    <% end %><br />
-		    <%= f.password_field :password, autocomplete: "off" %>
-		  </div>
+  		  <div class="field">
+  		    <%= f.label :password_confirmation, t("account.password-confirm") %><br />
+  		    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+  		  </div>
 
-		  <div class="field">
-		    <%= f.label :password_confirmation %><br />
-		    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-		  </div>
-
-		  <div class="actions">
-		    <%= f.submit "Sign up" %>
-		  </div>
-		<% end %>
-
-		<%= render "devise/shared/links" %>
+  		  <div class="actions">
+  		    <%= f.submit t("account.regist") %>
+  		  </div>
+  		<% end %>
+      <%= devise_error_messages! %>
+  		<%= render "devise/shared/links" %>
       </div>
     </div>
   </div>
 </div>
 <!-- 註冊頁面 -->
+
+
+
+
+<!-- email認證頁面 -->
+<div class="modal fade users-dialog" id="myModal-confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><%= t("account.confirm") %></h4>
+      </div>
+      <div class="modal-body">
+      <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+        <div class="field">
+          <%= f.label :email, t("account.email") %><br />
+          <%= f.email_field :email, autofocus: true %>
+        </div>
+
+        <div class="actions">
+          <%= f.submit t("account.resend-confirmMail") %>
+        </div>
+      <% end %>
+      <%= devise_error_messages! %>
+      <%= render "devise/shared/links" %>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- email認證頁面 -->
+
+
+<!-- 忘記密碼 -->
+<div class="modal fade users-dialog" id="myModal-forget-password" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><%= t("account.forget-password") %></h4>
+      </div>
+      <div class="modal-body">
+      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+        <div class="field">
+          <%= f.label :email, t("account.email") %><br />
+          <%= f.email_field :email, autofocus: true %>
+        </div>
+
+        <div class="actions">
+          <%= f.submit t("account.resend-passwordMail") %>
+        </div>
+      <% end %>
+      <%= devise_error_messages! %>
+      <%= render "devise/shared/links" %>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 忘記密碼 -->
+
+<!-- 修改密碼 -->
+<div class="modal fade users-dialog" id="myModal-change-password" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><%= t("account.change-password") %></h4>
+      </div>
+      <div class="modal-body">
+      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+        
+        <%= f.hidden_field :reset_password_token %>
+
+        <div class="field">
+          <%= f.label :password, t("account.new-password") %><br />
+          <%= f.password_field :password, autofocus: true, autocomplete: "off" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :password_confirmation, t("account.confirm-new-password") %><br />
+          <%= f.password_field :password_confirmation, autocomplete: "off" %>
+        </div>
+
+        <div class="actions">
+          <%= f.submit t("account.change-password-OK") %>
+        </div>
+      <% end %>
+      <%= devise_error_messages! %>
+      <%= render "devise/shared/links" %>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 修改密碼 -->
 
 <%= yield %>
 

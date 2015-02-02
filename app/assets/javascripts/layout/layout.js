@@ -29,9 +29,29 @@ $(document).on("page:change", function(){
     $("#alert-notice,#alert-background").fadeOut();
   });
   /*******警告視窗********/
-
-
-
-
   
+  $(".announce-btn").on("click", function(event) {
+    if( $(".announce-btn").hasClass('open') ){
+      $(this).animate({
+        width:"97px"
+      },300);
+      $(".announce").animate({
+        width:"0px",
+        height: "0px"
+      },400);
+      
+    }
+    else{
+      $(this).animate({
+        width:"485px"
+      });
+      $(".announce").animate({
+        width:"500px",
+        height: "200px"
+      });
+    }
+    $(this).toggleClass("open");
+  });
+
+
 });
