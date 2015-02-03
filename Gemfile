@@ -33,7 +33,7 @@ gem 'spring',        group: :development
 
 gem 'devise'		#登入註冊發送mail套件
 gem 'omniauth-facebook'
-
+gem 'carrierwave'
 
 
 #####Rails 4.1.8 + Compass + Susy2#####

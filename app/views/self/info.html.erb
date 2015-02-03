@@ -1,0 +1,82 @@
+<%= render "self/selectBar" %>
+
+<div class="main-self-info">
+	<i class="fa fa-camera self-bgImg"><h1>編輯背景圖</h1></i>
+	<div class="main-info-frame">
+		<div class="info-frame-left">
+			<div class="info-leftFrame">
+				<div class="info-title"><i class="fa fa-user"></i>個人資訊</div>
+				<div class="info-selfImg-top"><%= image_tag(current_user.avatar)%></div>
+				<div class="info-selfImg-bottom">
+					<h1>信箱:&nbsp;adaviddsc@hotmail.com</h1>
+					<h1>暱稱:&nbsp;逆風飛翔</h1>
+					<h1>工作情況:&nbsp;待業</h1>
+					<h1>學歷:&nbsp;大學</h1>
+				</div>
+			</div>
+
+			<div class="info-leftFrame">
+				<div class="info-title"><i class="fa fa-pencil-square-o"></i>編輯資訊</div>
+				<ul class="info-leftContent">
+					<li><a href="">編輯個人資訊</a></li>
+					<li><a href="">編輯個人經歷</a></li>
+					<li><a href="">設定個人隱私</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="info-frame-right">
+			<div class="info-rightFrame">
+				<div class="info-title"><i class="fa fa-info-circle"></i>內容</div>
+
+				<div class="info-editSelfInfo mCustomScrollbar" data-mcs-theme="rounded-dark">
+					<%= form_for :temp do |f| %>
+					<div class="editSelfImg">
+						<img src="/assets/home_img1.jpg" alt="">
+						<button>編輯大頭貼</button>
+					</div>
+					<div class="editSelfContent">
+						<div class="field">
+				          	<%= f.label :name, "姓名" %><br />
+				          	<%= f.text_field :name, class: 'form-control' %>
+				        </div>
+				        <div class="field">
+				          	<%= f.label :cellphone, "電話" %><br />
+				          	<%= f.text_field :cellphone, class: 'form-control' %>
+				        </div>
+				        <div class="field">
+				        	<%= f.label :sex, "性別" %><br />
+				        	<%= select(:sex, :sex, [['男', 1], ['女', 2]]) %>
+				        </div>
+				        <div class="field">
+				          	<%= f.label :old, "年齡" %><br />
+				          	<%= f.text_field :old, class: 'form-control' %>
+				        </div>
+				        <div class="field">
+				        	<%= f.label :love, "感情狀態" %><br />
+				        	<%= select(:love, :love, [['未婚', 1], ['已婚', 2]]) %>
+				        </div>
+				        <div class="field">
+				          	<%= f.label :workStatus, "工作情況" %><br />
+				          	<%= select(:workStatus, :workStatus, [['待業', 1], ['失業', 2], ['在職', 2]]) %>
+				        </div>
+				        <div class="field">
+				          	<%= f.label :education, "學歷" %><br />
+				          	<%= f.text_field :education, class: 'form-control' %>
+				        </div>
+				        <%= f.submit "編輯完成" %>
+					</div>
+					<% end %>
+				</div>
+
+
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$(document).one("page:update", function(){
+	screen_height_resize();
+});
+</script>

@@ -14,12 +14,16 @@ zh-TW:
     email: "信箱"
     password: "密碼"
     password-confirm: "密碼確認"
+    password-current: "當前密碼"
     remember_me: "記住我"
     at_least: "至少"
     char: "個字元"
-
-
-
+    nickname: "暱稱"
+    editAccount: "修改帳號資訊"
+    edit: "修改"
+    leave-blank: "如果您不想改密碼,請留白"
+    current-password: "我們需要您的當前密碼,以便確認使用者身份"
+    selfPage: "個人頁面"
 
 
   date:

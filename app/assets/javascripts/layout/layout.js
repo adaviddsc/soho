@@ -32,18 +32,36 @@ $(document).on("page:change", function(){
   
   $(".announce-btn").on("click", function(event) {
     if( $(".announce-btn").hasClass('open') ){
+      $(this).text("");
       $(this).animate({
-        width:"97px"
-      },300);
+        width:"30px"
+      },function(){
+        $(this).css({
+          "border-radius":"5px",
+          "-webkit-border-radius":"5px",
+          "-moz-border-radius":"5px"
+        });
+      });
       $(".announce").animate({
         width:"0px",
         height: "0px"
-      },400);
-      
+      });
     }
     else{
+      $(this).text(" 公告區");
+      $(this).css({
+        "border-radius":"0px",
+        "-webkit-border-radius":"0px",
+        "-moz-border-radius":"0px",
+        "border-top-left-radius":"5px",
+        "-webkit-border-top-left-radius":"5px",
+        "-moz-border-top-left-radius":"5px",
+        "border-top-right-radius":"5px",
+        "-webkit-border-top-right-radius":"5px",
+        "-moz-border-top-right-radius":"5px"
+      });
       $(this).animate({
-        width:"485px"
+        width:"500px"
       });
       $(".announce").animate({
         width:"500px",

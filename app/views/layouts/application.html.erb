@@ -19,8 +19,11 @@
 
 <% end %>
 
-
+<% if params[:controller][0..4]=="users" || params[:controller]=="home" %>
 <header class="header header-home">
+<% else %>
+<header class="header header-other">
+<% end %>
   <div class="header-left">
     <div class="logo">
       <a href="/"><img src="/assets/logo.png" alt=""></a>
@@ -30,7 +33,15 @@
 
   <% if user_signed_in? %>
     <div class="header-right">
-      <a data-method="delete" href="/users/sign_out" rel="nofollow"><button class="header-btn"><%= t("account.logout") %></button></a>
+      <!--<a data-method="delete" href="/users/sign_out" rel="nofollow"><button class="header-btn"><%= t("account.logout") %></button></a>-->
+      <div id="dLabel-header" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <%= image_tag(current_user.avatar, :class => "user-avatar") %><span class="user-name"><%= current_user.nickname %></span>&nbsp;<i class="fa fa-caret-down"></i>
+      </div>
+      <ul class="dropdown-menu header-menu" role="menu" aria-labelledby="dLabel-header">
+        <li><%= link_to t("account.selfPage"), { :controller => '/self', :action=>"info"} %></li>
+        <li><a href="/users/edit"><%= t("account.editAccount") %></a></li>
+        <li><a data-method="delete" href="/users/sign_out" rel="nofollow"><%= t("account.logout") %></a></li>
+      </ul>
     </div>
   <% else %>
     <div class="header-right">
@@ -108,6 +119,11 @@
   		    <%= f.label :password_confirmation, t("account.password-confirm") %><br />
   		    <%= f.password_field :password_confirmation, autocomplete: "off" %>
   		  </div>
+
+        <div class="field">
+          <%= f.label :nickname, t("account.nickname") %><br />
+          <%= f.text_field :nickname %>
+        </div>
 
   		  <div class="actions">
   		    <%= f.submit t("account.regist") %>
@@ -213,6 +229,65 @@
   </div>
 </div>
 <!-- 修改密碼 -->
+
+<!-- 編輯帳號資訊 -->
+<div class="modal fade users-dialog" id="myModal-editAccount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><%= t("account.editAccount") %></h4>
+      </div>
+      <div class="modal-body">
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+        
+
+        <div class="field">
+          <%= f.label :email, t("account.email") %><br />
+          <%= f.email_field :email, autofocus: true %>
+        </div>
+
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+        <% end %>
+
+        <div class="field">
+          <%= f.label :password, t("account.password") %> <i>(<%= t("account.leave-blank") %>)</i><br />
+          <%= f.password_field :password, autocomplete: "off" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :password_confirmation, t("account.password-confirm") %> <i>(<%= t("account.leave-blank") %>)</i><br />
+          <%= f.password_field :password_confirmation, autocomplete: "off" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :nickname, t("account.nickname") %><br />
+          <%= f.text_field :nickname%>
+        </div>
+
+        <div class="field">
+          <%= f.label :current_password, t("account.password-current") %> <i>(<%= t("account.current-password") %>)</i><br />
+          <%= f.password_field :current_password, autocomplete: "off" %>
+        </div>
+
+        <div class="actions">
+          <%= f.submit t("account.edit") %>
+        </div>
+      <% end %>
+      <%= devise_error_messages! %>
+      <!--
+      <h3>Cancel my account</h3>
+
+      <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+
+      <%= link_to "Back", :back %>
+      -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 編輯帳號資訊 -->
 
 <%= yield %>
 
