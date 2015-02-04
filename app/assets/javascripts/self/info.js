@@ -1,8 +1,8 @@
 function screen_height_resize(){
 	screen_height = $(window).height()-60;
-	info_editSelfInfo = screen_height-40-28;
+	info_editAllInfo = screen_height-40-28;
 	$('.main-announce-left,.main-announce-right,.main-self-info,.main-self-frame,.main-info-frame').height(screen_height+"px");
-	$('.info-editSelfInfo').height(info_editSelfInfo+"px");
+	$('.info-editAllInfo').height(info_editAllInfo+"px");
 }
 
 $(document).on("page:change", function(){
