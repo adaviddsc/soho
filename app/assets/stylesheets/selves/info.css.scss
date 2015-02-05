@@ -118,7 +118,9 @@
 				@include border-radius(5px);
 				background: #FFF;
 				margin: 20px 0;
+
 				.info-editSelfInfo{
+					display: none;
 					.editSelfImg{
 						text-align: center;
 						width: 500px;
@@ -345,6 +347,9 @@
 							margin: 0 0 35px 110px;
 						}*/
 					}
+				}
+				.show-infoFrame{
+					display: block;
 				}
 			}
 		}

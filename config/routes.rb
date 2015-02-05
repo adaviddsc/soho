@@ -1,12 +1,29 @@
 Rails.application.routes.draw do
   root :to => "home#index"
+
   devise_for :users, controllers: {
     :sessions => "users/sessions",
     :omniauth_callbacks => "users/omniauth_callbacks",
     :registrations => "users/registrations"
   }
-  get "self/info"
-  get "self/announce"
+
+  resource :self do
+    collection do
+      get :privicy
+    end
+
+    resources :experience
+    resources :ability
+
+    ##########used##########
+    # self/new
+    # experience/index
+    # experience/new
+    # ability/index
+    # ability/new
+    ##########used##########
+  end
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

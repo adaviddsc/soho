@@ -1,12 +1,14 @@
-<%= render "self/selectBar" %>
+<%= render "selves/selectBar" %>
 
 <div class="main-self-announce">
 	<div class="main-announce-left mCustomScrollbar" data-mcs-theme="rounded-dark">
+		<% if params[:controller] == "ability" && params[:action] == "new" %>
 		<div class="announceImg add-announceImg">
 			<div class="announceImg-camera">
 				<i class="fa fa-camera"></i>
 			</div>
 		</div>
+		<% end %>
 		<div class="announceImg">
 			<img src="/assets/home_img1.jpg" alt="">
 		</div>
@@ -24,6 +26,7 @@
 		<div class="self-announce-header"><i class="fa fa-thumb-tack self-ability-icn"></i>個人專長欄</div>
 		<div class="announce-middle">
 			
+			<% if params[:controller] == "ability" && params[:action] == "new" %>
 			<div class="self-announce-event">
 				<div class="event-title">
 					<i class="fa fa-plus"></i>新增工作類型
@@ -44,6 +47,7 @@
 					<input type="submit" value="新增">
 				</div>
 			</div>
+			<% end %>
 
 			<div class="self-announce-event">
 				<div class="event-title">網頁設計師</div>

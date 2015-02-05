@@ -1,2 +1,0 @@
-class SelfController < ApplicationController
-end

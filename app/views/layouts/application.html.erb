@@ -38,7 +38,7 @@
         <%= image_tag(current_user.avatar, :class => "user-avatar") %><span class="user-name"><%= current_user.nickname %></span>&nbsp;<i class="fa fa-caret-down"></i>
       </div>
       <ul class="dropdown-menu header-menu" role="menu" aria-labelledby="dLabel-header">
-        <li><%= link_to t("account.selfPage"), { :controller => '/self', :action=>"info"} %></li>
+        <li><%= link_to t("account.selfPage"), new_self_path %></li>
         <li><a href="/users/edit"><%= t("account.editAccount") %></a></li>
         <li><a data-method="delete" href="/users/sign_out" rel="nofollow"><%= t("account.logout") %></a></li>
       </ul>
