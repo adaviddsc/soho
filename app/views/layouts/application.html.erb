@@ -35,7 +35,7 @@
     <div class="header-right">
       <!--<a data-method="delete" href="/users/sign_out" rel="nofollow"><button class="header-btn"><%= t("account.logout") %></button></a>-->
       <div id="dLabel-header" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <%= image_tag(current_user.avatar, :class => "user-avatar") %><span class="user-name"><%= current_user.nickname %></span>&nbsp;<i class="fa fa-caret-down"></i>
+        <%= image_tag(current_user.self.avatar, :class => "user-avatar") %><span class="user-name"><%= current_user.nickname %></span>&nbsp;<i class="fa fa-caret-down"></i>
       </div>
       <ul class="dropdown-menu header-menu" role="menu" aria-labelledby="dLabel-header">
         <li><%= link_to t("account.selfPage"), new_self_path %></li>

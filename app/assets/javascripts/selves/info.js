@@ -1,3 +1,5 @@
+
+
 function screen_height_resize(){
 	screen_height = $(window).height()-60;
 	info_editAllInfo = screen_height-40-28;
@@ -21,5 +23,13 @@ $(document).on("page:change", function(){
 		$(".self-selectBar").animate({
 	        left:"-200px",
 	    });
+	});
+
+	$(".addAvatar-btn").on("click", function(event) {
+		$(".edit-avatarInput").click();
+
+	});
+	$(".edit-avatarInput").on("change", function(event) {
+		readURL(this, $(".edit-avatarImg") );
 	});
 });

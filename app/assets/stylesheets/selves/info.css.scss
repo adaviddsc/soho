@@ -133,18 +133,18 @@
 							@include border-radius(50%);
 							border: 1px solid #C0C0C0;
 						}
-						button{
+						.addAvatar-btn{
 							@include transition(all .2s linear);
 							@include border-radius(5px);
-							padding: 5px 8px;
-							border: none;
+							cursor: pointer;
 							margin: 10px auto 0;
-							display: block;
-							background: #BBBBBB;
-							border-bottom: 2px solid #868686;
-							color: #FFF;
+							display: inline-block;
+							background: #fff;
+							border: 1px solid #BDBDBD;
+							color: #5f7b94;
+							padding: 2px 5px;
 							&:hover{
-								background: #868686;
+								background: #E9EDEC;
 							}
 						}
 					}

@@ -1,3 +1,15 @@
+
+readURL = function(input, img) {
+  var reader;
+  if (input.files && input.files[0]) {
+    reader = new FileReader();
+    reader.onload = function(e) {
+      img.attr("src", e.target.result);
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+};
+
 var showImgFun
 var removeImgFun
 function showImg(value){

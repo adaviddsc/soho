@@ -5,7 +5,7 @@
 		<div class="info-frame-left">
 			<div class="info-leftFrame">
 				<div class="info-title"><i class="fa fa-user"></i>個人資訊</div>
-				<div class="info-selfImg-top"><%= image_tag(current_user.avatar)%></div>
+				<div class="info-selfImg-top"><%= image_tag(current_user.self.avatar)%></div>
 				<div class="info-selfImg-bottom">
 					<h1>信箱:&nbsp;adaviddsc@hotmail.com</h1>
 					<h1>暱稱:&nbsp;逆風飛翔</h1>
@@ -30,10 +30,11 @@
 				<div class="info-title"><i class="fa fa-info-circle"></i>內容</div>
 				
 				<div class="info-editAllInfo info-editSelfInfo mCustomScrollbar <% if params[:controller] == "selves" && ( params[:action] == "new" || params[:action] == "edit" ) %>show-infoFrame<% end %>" data-mcs-theme="rounded-dark">
-					<%= form_for @self, :url => { :controller => 'selves', :action => @self_action } do |f| %>
+					<%= form_for @self, :url => { :controller => 'selves', :action => @self_action }, :html => {:enctype => 'multipart/form-data'} do |f| %>
 					<div class="editSelfImg">
-						<img src="/assets/home_img1.jpg" alt="">
-						<button>編輯大頭貼</button>
+						<%= image_tag(current_user.self.avatar, class: "edit-avatarImg")%><br>
+						<div class="addAvatar-btn">編輯大頭貼</div> <!--<button>會有問題！！！！-->
+						<%= f.file_field :avatar, class: "edit-avatarInput hidden-fileInput", accept: 'image/*' %>
 					</div>
 					<div class="editSelfContent">
 						<div class="field">
