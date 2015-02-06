@@ -104,6 +104,8 @@ GEM
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     mysql2 (0.3.17)
+    nested_form_fields (0.6)
+      rails (>= 3.2.0)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
@@ -213,6 +215,7 @@ DEPENDENCIES
   jquery-rails
   meta_request
   mysql2
+  nested_form_fields
   omniauth-facebook
   rails (= 4.1.8)
   rspec-rails

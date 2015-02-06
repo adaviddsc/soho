@@ -17,6 +17,9 @@ Rails.application.routes.draw do
 
     ##########used##########
     # self/new
+    # self/create
+    # self/edit
+    # self/update
     # experience/index
     # experience/new
     # ability/index

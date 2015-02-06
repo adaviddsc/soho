@@ -34,7 +34,7 @@ gem 'spring',        group: :development
 gem 'devise'		#登入註冊發送mail套件
 gem 'omniauth-facebook'
 gem 'carrierwave'
-
+gem 'nested_form_fields'	#關聯資料form
 
 #####Rails 4.1.8 + Compass + Susy2#####
 gem 'compass-rails', '~> 2.0.4'

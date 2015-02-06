@@ -29,9 +29,8 @@
 			<div class="info-rightFrame">
 				<div class="info-title"><i class="fa fa-info-circle"></i>內容</div>
 				
-				<div class="info-editAllInfo info-editSelfInfo mCustomScrollbar <% if params[:controller] == "selves" && params[:action] == "new" %>show-infoFrame<% end %>" data-mcs-theme="rounded-dark">
-
-					<%= form_for :temp do |f| %>
+				<div class="info-editAllInfo info-editSelfInfo mCustomScrollbar <% if params[:controller] == "selves" && ( params[:action] == "new" || params[:action] == "edit" ) %>show-infoFrame<% end %>" data-mcs-theme="rounded-dark">
+					<%= form_for @self, :url => { :controller => 'selves', :action => @self_action } do |f| %>
 					<div class="editSelfImg">
 						<img src="/assets/home_img1.jpg" alt="">
 						<button>編輯大頭貼</button>
@@ -47,19 +46,19 @@
 				        </div>
 				        <div class="field">
 				        	<i class="fa fa-transgender"></i><%= f.label :sex, "性別" %><br />
-				        	<%= select(:sex, :sex, [['男', 1], ['女', 2]]) %>
+				        	<%= f.select :sex, options_for_select([['男', 'male'], ['女', 'female']], :selected => f.object.sex) %>
 				        </div>
 				        <div class="field">
 				          	<i class="fa fa-birthday-cake"></i><%= f.label :birth, "生日" %><br />
 				          	<%= f.date_field :birth, class: 'form-control' %>
 				        </div>
 				        <div class="field">
-				        	<i class="fa fa-heart"></i><%= f.label :love, "婚姻狀態" %><br />
-				        	<%= select(:love, :love, [['未婚', 1], ['已婚', 2]]) %>
+				        	<i class="fa fa-heart"></i><%= f.label :marriage, "婚姻狀態" %><br />
+				        	<%= f.select :marriage, options_for_select([['未婚', 'unmarried'], ['已婚', 'married']], :selected => f.object.marriage) %>
 				        </div>
 				        <div class="field">
 				          	<i class="fa fa-money"></i><%= f.label :workStatus, "工作情況" %><br />
-				          	<%= select(:workStatus, :workStatus, [['待業', 1], ['失業', 2], ['在職', 2]]) %>
+				          	<%= f.select :workStatus, options_for_select([['待業', 'findWork'], ['失業', 'noWork'], ['在職', 'onWork']], :selected => f.object.workStatus) %>
 				        </div>
 				        <div class="field">
 				          	<i class="fa fa-graduation-cap"></i><%= f.label :education, "學歷" %><br />
@@ -69,6 +68,8 @@
 				        <%= f.submit "編輯完成" %>
 					</div>
 					<% end %>
+
+
 				</div>
 
 				<div class="info-editAllInfo info-editExper mCustomScrollbar <% if params[:controller] == "experience" && params[:action] == "index" %>show-infoFrame<% end %>" data-mcs-theme="rounded-dark">
@@ -222,7 +223,6 @@
 
 				<div class="info-editAllInfo info-newExper mCustomScrollbar <% if params[:controller] == "experience" && params[:action] == "new" %>show-infoFrame<% end %>" data-mcs-theme="rounded-dark">
 					<div class="newExper-frame">
-						
 						<br>
 						<label>公司行號</label>
 						<input type="text" class="form-control">

@@ -11,7 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150130095713) do
+ActiveRecord::Schema.define(version: 20150206055441) do
+
+  create_table "selves", force: true do |t|
+    t.integer  "user_id"
+    t.string   "avatar"
+    t.string   "name"
+    t.string   "cellphone"
+    t.string   "sex"
+    t.date     "birth"
+    t.string   "marriage"
+    t.string   "workStatus"
+    t.string   "education"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "selves", ["user_id"], name: "index_selves_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
