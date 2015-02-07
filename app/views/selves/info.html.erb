@@ -7,17 +7,17 @@
 				<div class="info-title"><i class="fa fa-user"></i>個人資訊</div>
 				<div class="info-selfImg-top"><%= image_tag(current_user.self.avatar)%></div>
 				<div class="info-selfImg-bottom">
-					<h1>信箱:&nbsp;adaviddsc@hotmail.com</h1>
-					<h1>暱稱:&nbsp;逆風飛翔</h1>
-					<h1>姓名:&nbsp;張允</h1>
-					<h1>電話:&nbsp;0917367819</h1>
+					<h1>信箱:&nbsp;<%= current_user.email %></h1>
+					<h1>暱稱:&nbsp;<%= current_user.nickname %></h1>
+					<h1>姓名:&nbsp;<%= current_user.self.name %></h1>
+					<h1>電話:&nbsp;<%= current_user.self.cellphone %></h1>
 				</div>
 			</div>
 
 			<div class="info-leftFrame">
 				<div class="info-title"><i class="fa fa-pencil-square-o"></i>編輯資訊</div>
 				<ul class="info-leftContent">
-					<li><%= link_to "個人資訊", new_self_path %></li>
+					<li><%= link_to "個人資訊", edit_self_path %></li>
 					<li><%= link_to "個人經歷", self_experience_index_path %></li>
 					<li><%= link_to "新增個人經歷", new_self_experience_path %></li>
 					<li><a href="">編輯背景圖片</a></li>
@@ -29,8 +29,9 @@
 			<div class="info-rightFrame">
 				<div class="info-title"><i class="fa fa-info-circle"></i>內容</div>
 				
-				<div class="info-editAllInfo info-editSelfInfo mCustomScrollbar <% if params[:controller] == "selves" && ( params[:action] == "new" || params[:action] == "edit" ) %>show-infoFrame<% end %>" data-mcs-theme="rounded-dark">
-					<%= form_for @self, :url => { :controller => 'selves', :action => @self_action }, :html => {:enctype => 'multipart/form-data'} do |f| %>
+				<% if params[:controller] == "selves" && ( params[:action] == "new" || params[:action] == "edit" ) %>
+				<div class="info-editAllInfo info-editSelfInfo mCustomScrollbar" data-mcs-theme="rounded-dark">
+					<%= form_for @self, :url => { :controller => 'selves', :action => "update" }, :html => {:enctype => 'multipart/form-data'} do |f| %>
 					<div class="editSelfImg">
 						<%= image_tag(current_user.self.avatar, class: "edit-avatarImg")%><br>
 						<div class="addAvatar-btn">編輯大頭貼</div> <!--<button>會有問題！！！！-->
@@ -69,14 +70,15 @@
 				        <%= f.submit "編輯完成" %>
 					</div>
 					<% end %>
-
-
 				</div>
+				<% end %>
 
-				<div class="info-editAllInfo info-editExper mCustomScrollbar <% if params[:controller] == "experience" && params[:action] == "index" %>show-infoFrame<% end %>" data-mcs-theme="rounded-dark">
+				<% if params[:controller] == "experience" && params[:action] == "index" %>
+				<div class="info-editAllInfo info-editExper mCustomScrollbar" data-mcs-theme="rounded-dark">
 					<div class="info-workCategory">
 						<label>工作型態</label>
 						<select>
+							<option value="">全部</option>
 							<option value="">兼職</option>
 							<option value="">全職</option>
 							<option value="">外包</option>
@@ -84,180 +86,81 @@
 						</select>
 						<label>職業類型</label>
 						<select>
+							<option value="">全部</option>
 							<option value="">網頁設計</option>
 							<option value="">版面設計</option>
 							<option value="">廣告設計</option>
 						</select>
 					</div>
+
+
+					<% current_user.experience.each do |value| %>
 					<div class="info-workExper">
 						<div class="info-workExperEdit">
-							<a href=""><i class="fa fa-pencil-square-o"></i>編輯</a>
-							<a href=""><i class="fa fa-trash"></i>刪除</a>
+							<a href="/self/experience/<%= value.id %>/edit"><i class="fa fa-pencil-square-o"></i>編輯</a>
+							<a data-confirm="確定刪除？" data-method="delete" href="/self/experience/<%= value.id %>" rel="nofollow"><i class="fa fa-trash"></i>刪除</a>
 						</div>
 						<div class="workExper-left">
-							<title>職業類型:&nbsp;網頁設計</title><br>
-							<label>公司行號:</label><h1>sokoos</h1><br>
-							<label>工作起始日:</label><h1>2013-12-01</h1><br>
-							<label>工作離職日:</label><h1>2015-08-15</h1><br>
-							<label>在職時間:</label><h1>1年半個月</h1><br>
-							<label>薪水(月薪):</label><h1>10000</h1><br>
-							<label>工作型態:</label><h1>工讀</h1><br>
+							<title>職業類型:&nbsp;<%= t("workCategory."+value.workCategory) %></title><br>
+							<label>公司行號:</label><h1><%= value.workCompany %></h1><br>
+							<label>工作起始日:</label><h1><%= value.workStart %></h1><br>
+							<label>工作離職日:</label><h1><%= value.workEnd %></h1><br>
+							<label>在職時間:</label><h1><%= value.workEnd.day-value.workStart.day %>(日)</h1><br>
+							<label>薪水(月薪):</label><h1><%= value.workSalary %></h1><br>
+							<label>工作型態:</label><h1><%= t("workStyle."+value.workStyle) %></h1><br>
 						</div>
 						<div class="workExper-right">
 							<label>工作經驗:</label><br>
-							<textarea class="form-control">朋友的家人發生不幸
-							如果2/3早上六點左右經過中壢到新竹路段的朋友有拍到事發過程
-							或是在事發前有經過該現場的朋友
-							有拍到該工程車是否有擺放交通錐或是交通錐的擺放情形
-							希望能夠提供您的行車記錄器幫助釐清真相
-
-							『我哥哥在今天早上變成天使了，哥哥的女朋友現在還在醫院，意識不清……
-							這篇新聞內容部分不實
-							更扯的是那台工程車疑似根本沒有放交通錐 
-							有一個社團有po今天早上有經過事發地點
-							很多駕駛都說好像沒有放交通錐
-							也有人說交通錐放很近
-							拜託大家有沒有早上六點左右經過中壢到新竹路段的有沒有任何行車紀錄器之類的
-							拜託大家了』</textarea>
+							<span class="form-control mCustomScrollbar" data-mcs-theme="rounded-dark"><%= simple_format(value.workExperience) %></span>
 						</div>
 					</div>
-
-
-
-					<div class="info-workExper">
-						<div class="info-workExperEdit">
-							<a href=""><i class="fa fa-pencil-square-o"></i>編輯</a>
-							<a href=""><i class="fa fa-trash"></i>刪除</a>
-						</div>
-						<div class="workExper-left">
-							<title>職業類型:&nbsp;網頁設計</title><br>
-							<label>公司行號:</label><h1>sokoos</h1><br>
-							<label>工作起始日:</label><h1>2013-12-01</h1><br>
-							<label>工作離職日:</label><h1>2015-08-15</h1><br>
-							<label>在職時間:</label><h1>1年半個月</h1><br>
-							<label>薪水(月薪):</label><h1>10000</h1><br>
-							<label>工作型態:</label><h1>工讀</h1><br>
-						</div>
-						<div class="workExper-right">
-							<label>工作經驗:</label><br>
-							<textarea class="form-control">朋友的家人發生不幸
-							如果2/3早上六點左右經過中壢到新竹路段的朋友有拍到事發過程
-							或是在事發前有經過該現場的朋友
-							有拍到該工程車是否有擺放交通錐或是交通錐的擺放情形
-							希望能夠提供您的行車記錄器幫助釐清真相
-
-							『我哥哥在今天早上變成天使了，哥哥的女朋友現在還在醫院，意識不清……
-							這篇新聞內容部分不實
-							更扯的是那台工程車疑似根本沒有放交通錐 
-							有一個社團有po今天早上有經過事發地點
-							很多駕駛都說好像沒有放交通錐
-							也有人說交通錐放很近
-							拜託大家有沒有早上六點左右經過中壢到新竹路段的有沒有任何行車紀錄器之類的
-							拜託大家了』</textarea>
-						</div>
-					</div>
-					<div class="info-workExper">
-						<div class="info-workExperEdit">
-							<a href=""><i class="fa fa-pencil-square-o"></i>編輯</a>
-							<a href=""><i class="fa fa-trash"></i>刪除</a>
-						</div>
-						<div class="workExper-left">
-							<title>職業類型:&nbsp;網頁設計</title><br>
-							<label>公司行號:</label><h1>sokoos</h1><br>
-							<label>工作起始日:</label><h1>2013-12-01</h1><br>
-							<label>工作離職日:</label><h1>2015-08-15</h1><br>
-							<label>在職時間:</label><h1>1年半個月</h1><br>
-							<label>薪水(月薪):</label><h1>10000</h1><br>
-							<label>工作型態:</label><h1>工讀</h1><br>
-						</div>
-						<div class="workExper-right">
-							<label>工作經驗:</label><br>
-							<textarea class="form-control">朋友的家人發生不幸
-							如果2/3早上六點左右經過中壢到新竹路段的朋友有拍到事發過程
-							或是在事發前有經過該現場的朋友
-							有拍到該工程車是否有擺放交通錐或是交通錐的擺放情形
-							希望能夠提供您的行車記錄器幫助釐清真相
-
-							『我哥哥在今天早上變成天使了，哥哥的女朋友現在還在醫院，意識不清……
-							這篇新聞內容部分不實
-							更扯的是那台工程車疑似根本沒有放交通錐 
-							有一個社團有po今天早上有經過事發地點
-							很多駕駛都說好像沒有放交通錐
-							也有人說交通錐放很近
-							拜託大家有沒有早上六點左右經過中壢到新竹路段的有沒有任何行車紀錄器之類的
-							拜託大家了』</textarea>
-						</div>
-					</div>
-					<div class="info-workExper">
-						<div class="info-workExperEdit">
-							<a href=""><i class="fa fa-pencil-square-o"></i>編輯</a>
-							<a href=""><i class="fa fa-trash"></i>刪除</a>
-						</div>
-						<div class="workExper-left">
-							<title>職業類型:&nbsp;網頁設計</title><br>
-							<label>公司行號:</label><h1>sokoos</h1><br>
-							<label>工作起始日:</label><h1>2013-12-01</h1><br>
-							<label>工作離職日:</label><h1>2015-08-15</h1><br>
-							<label>在職時間:</label><h1>1年半個月</h1><br>
-							<label>薪水(月薪):</label><h1>10000</h1><br>
-							<label>工作型態:</label><h1>工讀</h1><br>
-						</div>
-						<div class="workExper-right">
-							<label>工作經驗:</label><br>
-							<textarea class="form-control">朋友的家人發生不幸
-							如果2/3早上六點左右經過中壢到新竹路段的朋友有拍到事發過程
-							或是在事發前有經過該現場的朋友
-							有拍到該工程車是否有擺放交通錐或是交通錐的擺放情形
-							希望能夠提供您的行車記錄器幫助釐清真相
-
-							『我哥哥在今天早上變成天使了，哥哥的女朋友現在還在醫院，意識不清……
-							這篇新聞內容部分不實
-							更扯的是那台工程車疑似根本沒有放交通錐 
-							有一個社團有po今天早上有經過事發地點
-							很多駕駛都說好像沒有放交通錐
-							也有人說交通錐放很近
-							拜託大家有沒有早上六點左右經過中壢到新竹路段的有沒有任何行車紀錄器之類的
-							拜託大家了』</textarea>
-						</div>
-					</div>
+					<% end %>
 				</div>
+				<% end %>
 
-				<div class="info-editAllInfo info-newExper mCustomScrollbar <% if params[:controller] == "experience" && params[:action] == "new" %>show-infoFrame<% end %>" data-mcs-theme="rounded-dark">
-					<div class="newExper-frame">
-						<br>
-						<label>公司行號</label>
-						<input type="text" class="form-control">
-						<br>
-						<label>工作起始日</label>
-						<input type="date" class="form-control">
-						<br>
-						<label>工作離職日</label>
-						<input type="date" class="form-control">
-						<br>
-						<label>薪水(月薪)</label>
-						<input type="number" class="form-control" min="0">
-						<br>
-						<label>職業類型</label>
-						<select>
-							<option value="">網頁設計</option>
-							<option value="">版面設計</option>
-							<option value="">廣告設計</option>
-						</select>
-						<label>工作型態</label>
-						<select>
-							<option value="">兼職</option>
-							<option value="">全職</option>
-							<option value="">外包</option>
-							<option value="">工讀</option>
-						</select>
-						<br>
-						<label>工作經驗:</label><br>
-						<textarea class="form-control"></textarea>
-						<input type="submit" value="新增">
+				<% if params[:controller] == "experience" && ( params[:action] == "new" || params[:action] == "edit" ) %>
+					<%= form_for @experience, :url => { :controller => 'experience', :action => @experience_action } do |f| %>
+					<div class="info-editAllInfo info-newExper mCustomScrollbar " data-mcs-theme="rounded-dark">
+						<div class="newExper-frame">
+							<br>
+							<div class="field">
+					          	<%= f.label :workCompany, "公司行號" %><br />
+					          	<%= f.text_field :workCompany, class: 'form-control' %>
+					        </div>
+					        <br>
+					        <div class="field">
+					          	<%= f.label :workStart, "工作起始日" %><br />
+					          	<%= f.date_field :workStart, class: 'form-control' %>
+					        </div>
+							<br>
+							<div class="field">
+					          	<%= f.label :workEnd, "工作離職日" %><br />
+					          	<%= f.date_field :workEnd, class: 'form-control' %>
+					        </div>
+							<br>
+							<div class="field">
+					          	<%= f.label :workSalary, "薪水(月薪)" %><br />
+					          	<%= f.number_field :workSalary, class: 'form-control' %>
+					        </div>
+							<br>
+							<div class="field">
+					          	<%= f.label :workCategory, "職業類型" %><br />
+					          	<%= f.select :workCategory, options_for_select([['網頁設計', 'web_design'], ['視覺設計', 'visual_design'], ['廣告設計', 'advertisement_design']], :selected => f.object.workCategory) %>
+					        </div>
+							<div class="field">
+					          	<%= f.label :workStyle, "工作型態" %><br />
+					          	<%= f.select :workStyle, options_for_select([['兼職', 'part-time'], ['全職', 'full-time'], ['外包', 'case'], ['實習', 'intern']], :selected => f.object.workStyle) %>
+					        </div>
+							<%= f.label :workExperience, "工作經驗" %><br />
+							<%= f.text_area :workExperience, class: 'form-control' %>
+							<%= f.submit "編輯" %>
+						</div>
 					</div>
-				</div>
+					<% end %>
+				<% end %>
 
-				<div class="info-editAllInfo info-privicy mCustomScrollbar <% if params[:controller] == "selves" && params[:action] == "privicy" %>show-infoFrame<% end %>" data-mcs-theme="rounded-dark">
+				<% if params[:controller] == "selves" && params[:action] == "privicy" %>
+				<div class="info-editAllInfo info-privicy mCustomScrollbar" data-mcs-theme="rounded-dark">
 					<div class="privicy-frame">
 						<h1>個人資訊-</h1><h2>隱私設定</h2>
 						<div class="line"></div>
@@ -344,6 +247,7 @@
 						<label>工作經驗</label><br>
 					</div>
 				</div>
+				<% end %>
 			</div>
 		</div>
 	</div>

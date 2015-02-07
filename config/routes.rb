@@ -16,14 +16,22 @@ Rails.application.routes.draw do
     resources :ability
 
     ##########used##########
-    # self/new
-    # self/create
-    # self/edit
-    # self/update
-    # experience/index
-    # experience/new
-    # ability/index
-    # ability/new
+    # selves#create
+    # selves#edit
+    # selves#update
+    # 
+    # experience#index
+    # experience#new
+    # experience#update
+    # experience#edit
+    # experience#destroy
+    # 
+    # ability#index
+    # ability#new
+    # ability#create
+    # ability#update
+    # ability#edit
+    # ability#destroy
     ##########used##########
   end
 

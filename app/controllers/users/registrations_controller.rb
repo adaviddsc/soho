@@ -8,9 +8,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    super
+    user_id = User.find_by(email: sign_up_params["email"]).id
+    Self.new(user_id: user_id).save
+  end
 
   # GET /resource/edit
   # def edit

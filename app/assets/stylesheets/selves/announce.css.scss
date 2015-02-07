@@ -61,7 +61,6 @@
 	}
 	.announce-middle{
 		margin: 0 auto;
-		overflow: auto;
 		padding-bottom: 10px;
 		.self-announce-event{
 			position: relative;
@@ -69,7 +68,7 @@
 			height: 345px;
 			background: #FFFFFF;
 			@include border-radius(5px);
-			margin: 20px 10px 0;
+			margin: 20px 10px 5px;
 			float: left;
 			box-shadow: 0 1px 2px #BABABA;
 			.event-title{
@@ -86,6 +85,23 @@
 				.fa-plus{
 					margin-right: 5px;
 				}
+				a{
+					color: #fff;
+					float: right;
+					text-decoration: none;
+					font-size: 16px;
+					margin: 2px -5px 0 15px;
+					&:hover{
+						color: #D4E9EF;
+					}
+				}
+				i{
+					margin-right: 3px;
+				}
+			}
+			.event-title-edit{
+				background: #A6A6A6;
+				border-bottom: 2px solid #808080
 			}
 			.event-content{
 				overflow-x: hidden;
@@ -94,6 +110,7 @@
 				padding: 10px 0px 10px 15px;
 				height: 250px;
 				background: #fff;
+				font-size: 16px;
 				h1{
 					margin: 10px 0px;
 					font-size: 16px;
@@ -120,6 +137,7 @@
 				}
 				select{
 					margin-bottom: 10px;
+					margin-left: 1px;
 				}
 				.event-line{
 					margin-bottom: 20px;
@@ -189,8 +207,7 @@
 					font-size: 18px;
 					display: block;
 				}
-				textarea{
-					resize: none;
+				span{
 					width: 270px;
 					margin: 0 auto;
 					height: 185px;

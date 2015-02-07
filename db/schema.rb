@@ -11,7 +11,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150206055441) do
+ActiveRecord::Schema.define(version: 20150207150520) do
+
+  create_table "abilities", force: true do |t|
+    t.integer  "user_id"
+    t.string   "workCategory"
+    t.text     "abilityContent"
+    t.text     "abilityDetail"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "abilities", ["user_id"], name: "index_abilities_on_user_id", using: :btree
+
+  create_table "experiences", force: true do |t|
+    t.integer  "user_id"
+    t.string   "workCompany"
+    t.date     "workStart"
+    t.date     "workEnd"
+    t.integer  "workSalary"
+    t.string   "workCategory"
+    t.string   "workStyle"
+    t.text     "workExperience"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "experiences", ["user_id"], name: "index_experiences_on_self_id", using: :btree
 
   create_table "selves", force: true do |t|
     t.integer  "user_id"
@@ -48,7 +74,6 @@ ActiveRecord::Schema.define(version: 20150206055441) do
     t.datetime "updated_at"
     t.string   "provider"
     t.string   "uid"
-    t.string   "avatar"
     t.string   "nickname"
   end
 

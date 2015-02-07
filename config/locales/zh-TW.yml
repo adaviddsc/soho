@@ -25,6 +25,17 @@ zh-TW:
     current-password: "我們需要您的當前密碼,以便確認使用者身份"
     selfPage: "個人頁面"
 
+  workCategory:
+    web_design: "網頁設計"
+    visual_design: "視覺設計"
+    advertisement_design: "廣告設計"
+
+  workStyle:
+    part-time: "兼職"
+    full-time: "全職"
+    case: "外包"
+    intern: "實習"
+
 
   date:
     abbr_day_names:
