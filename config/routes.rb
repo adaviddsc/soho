@@ -13,7 +13,11 @@ Rails.application.routes.draw do
     end
 
     resources :experience
-    resources :ability
+    resources :ability do
+      collection do
+        post :browse
+      end
+    end
 
     ##########used##########
     # selves#create

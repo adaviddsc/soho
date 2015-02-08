@@ -8,8 +8,8 @@ class User < ActiveRecord::Base
   validates :nickname, :presence => true
 
   has_one :self
-  has_many :experience
-  has_many :ability
+  has_many :experiences
+  has_many :abilities
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|

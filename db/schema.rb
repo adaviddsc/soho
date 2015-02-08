@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150207150520) do
+ActiveRecord::Schema.define(version: 20150208145519) do
 
   create_table "abilities", force: true do |t|
     t.integer  "user_id"
@@ -23,6 +23,25 @@ ActiveRecord::Schema.define(version: 20150207150520) do
   end
 
   add_index "abilities", ["user_id"], name: "index_abilities_on_user_id", using: :btree
+
+  create_table "ability_browses", force: true do |t|
+    t.integer  "ability_id"
+    t.string   "user"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "ability_browses", ["ability_id"], name: "index_ability_browses_on_ability_id", using: :btree
+
+  create_table "ability_imgs", force: true do |t|
+    t.integer  "ability_id"
+    t.integer  "order"
+    t.string   "image"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "ability_imgs", ["ability_id"], name: "index_ability_imgs_on_ability_id", using: :btree
 
   create_table "experiences", force: true do |t|
     t.integer  "user_id"

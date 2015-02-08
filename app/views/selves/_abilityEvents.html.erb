@@ -1,62 +1,89 @@
 <div class="main-announce-left mCustomScrollbar" data-mcs-theme="rounded-dark">
-	<% if params[:controller] == "ability" && params[:action] == "new" %>
-	<div class="announceImg add-announceImg">
-		<div class="announceImg-camera">
-			<i class="fa fa-camera"></i>
+	<% if params[:controller] == "ability" && params[:action] != "index" %>
+
+		<div class="announceImg add-announceImg">
+			<div class="announceImg-camera">
+				<i class="fa fa-camera"></i>
+			</div>
 		</div>
-	</div>
+
+		<%= collection.nested_fields_for :ability_imgs do |nested_f| %>
+			<%= nested_f.remove_nested_fields_link raw('<i class="fa fa-times"></i>刪除'), class: 'nested-ability-remove' %>
+			<%= nested_f.file_field :image, class: 'hidden-fileInput nested-ability-image' %>
+			<%= nested_f.hidden_field :order, class: 'nested-ability-order' %>
+		<% end %>
+		<%= collection.add_nested_fields_link :ability_imgs ,"新增圖片或影片", class: 'hidden-fileInput add-ability-nested' %>
+
 	<% end %>
-	<div class="announceImg">
-		<img src="/assets/home_img1.jpg" alt="">
-	</div>
-	<div class="announceImg">
-		<img src="/assets/home_img2.jpg" alt="">
-	</div>
-	<div class="announceImg">
-		<img src="/assets/home_img3.jpg" alt="">
-	</div>
-	<div class="announceImg">
-		<img src="/assets/home_img4.jpg" alt="">
-	</div>
+
+
+	<% if params[:controller] == "ability" && params[:action] == "index" %>
+		<% current_user.abilities.each do |abilities| %>
+			<% abilities.ability_imgs.each do |value| %>
+				<div class="announceImg-hide announceImg ability-event-<%= value.ability_id %>">
+					<img src="<%= value.image %>" class="announceImg-container" alt="">
+				</div>
+			<% end %>
+		<% end %>
+	<% else %>
+		<script>
+		$(document).one("page:update", function(){
+			$('.nested_ability_ability_imgs').append('<div class="announceImg-hide announceImg"><img src="" class="announceImg-container" alt=""></div>');
+		});
+		</script>
+		<% current_user.abilities.each do |abilities| %>
+			<% abilities.ability_imgs.each_with_index do |value, index| %>
+				<% if value.ability_id == params[:id].to_i %>
+					<script>
+					$(document).one("page:update", function(){
+						$('.announceImg-container').eq(<%= index %>).attr('src','<%= value.image %>');
+					});
+					</script>
+				<% end %>
+			<% end %>
+		<% end %>
+	<% end %>
+
+
 </div>
 <div class="main-announce-right mCustomScrollbar" data-mcs-theme="rounded-dark">
 	<div class="self-announce-header"><i class="fa fa-thumb-tack self-ability-icn"></i>個人專長欄</div>
 	<div class="announce-middle">
 
 		<% if params[:controller] == "ability" && params[:action] != "index" %>
-		<div class="self-announce-event">
-			<div class="event-title event-title-edit">
-				<% if params[:controller] == "ability" && params[:action] == "new" %>
-				<i class="fa fa-plus"></i>新增專長
-				<% elsif params[:controller] == "ability" && params[:action] == "edit" %>
-				<i class="fa fa-pencil-square-o"></i>編輯專長
-				<a data-confirm="確定刪除？" data-method="delete" href="/self/ability/<%= params[:id] %>" rel="nofollow"><i class="fa fa-trash"></i>刪除</a>
-				<% end %>
+			<div class="self-announce-event">
+				<div class="event-title event-title-edit">
+					<% if params[:controller] == "ability" && params[:action] == "new" %>
+					<i class="fa fa-plus"></i>新增專長
+					<% elsif params[:controller] == "ability" && params[:action] == "edit" %>
+					<i class="fa fa-pencil-square-o"></i>編輯專長
+					<a data-confirm="確定刪除？" data-method="delete" href="/self/ability/<%= params[:id] %>" rel="nofollow"><i class="fa fa-trash"></i>刪除</a>
+					<% end %>
+				</div>
+				<div class="event-content add-event-content mCustomScrollbar" data-mcs-theme="rounded-dark">
+					<h1 class="add-event-title">職業類型</h1>
+					<%= collection.select :workCategory, options_for_select([['網頁設計', 'web_design'], ['視覺設計', 'visual_design'], ['廣告設計', 'advertisement_design']], :selected => collection.object.workCategory) %>
+					<div class="event-line"></div>
+					<h1 class="add-event-title">專長內容</h1>
+					<%= collection.text_area :abilityContent, class: 'form-control' %>
+					<div class="event-line"></div>
+					<h1 class="add-event-title">備註事項(可以填上個人聯絡資訊,詳細需求等等......)</h1>
+					<%= collection.text_area :abilityDetail, class: 'form-control' %>
+					<%= collection.submit "編輯", class: 'nested_ability_submit' %>
+				</div>
 			</div>
-			<div class="event-content add-event-content mCustomScrollbar" data-mcs-theme="rounded-dark">
-				<h1 class="add-event-title">職業類型</h1>
-				<%= collection.select :workCategory, options_for_select([['網頁設計', 'web_design'], ['視覺設計', 'visual_design'], ['廣告設計', 'advertisement_design']], :selected => collection.object.workCategory) %>
-				<div class="event-line"></div>
-				<h1 class="add-event-title">專長內容</h1>
-				<%= collection.text_area :abilityContent, class: 'form-control' %>
-				<div class="event-line"></div>
-				<h1 class="add-event-title">備註事項(可以填上個人聯絡資訊,詳細需求等等......)</h1>
-				<%= collection.text_area :abilityDetail, class: 'form-control' %>
-				<%= collection.submit "編輯" %>
-			</div>
-		</div>
 		<% end %>
-		
-		
-		<% current_user.ability.each do |value| %>
+
+		<% current_user.abilities.each_with_index do |value, index| %>
 			<% if params[:id].to_i!=value.id %>
 			<div class="self-announce-event">
+				<input type="hidden" class="ability-event-hidden" value="<%= value.id %>">
 				<div class="event-title">
 					<%= t("workCategory."+value.workCategory) %>
 					<a data-confirm="確定刪除？" data-method="delete" href="/self/ability/<%= value.id %>" rel="nofollow"><i class="fa fa-trash"></i>刪除</a>
 					<a href="/self/ability/<%= value.id %>/edit"><i class="fa fa-pencil-square-o"></i>編輯</a>
 				</div>
-				<div class="event-content mCustomScrollbar" data-mcs-theme="rounded-dark">
+				<div class="event-content mCustomScrollbar" data-mcs-theme="rounded-dark" ability-id="<%= value.id %>">
 					<%= simple_format(value.abilityContent) %>
 				</div>
 				<div class="event-bottom">
@@ -64,7 +91,7 @@
 						<%= image_tag(current_user.self.avatar, :class => "user-avatar") %><span class="user-name"><%= current_user.nickname %></span>
 					</div>
 					<div class="event-info">
-						<span><i class="glyphicon glyphicon-eye-open"></i>5892</span>
+						<span><i class="glyphicon glyphicon-eye-open"></i><%= value.ability_browses.length %></span>
 						<span class="glyphicon glyphicon-arrow-up eventInfo-open"></span>
 					</div>
 				</div>
@@ -75,5 +102,23 @@
 			</div>
 			<% end %>
 		<% end %>
+
+		<% if params[:controller] == "ability" && params[:action] == "index" %>
+			<script>
+			$(document).one("page:update", function(){
+				ability_event_bind();
+				$('.self-announce-event').eq(0).find('.event-content').click();
+				$('.self-announce-event').find('.event-content').css('cursor','pointer');
+			});
+			</script>
+		<% else %>
+			<script>
+			$(document).one("page:update", function(){
+				$('.self-announce-event').eq(0).css('box-shadow','0px 2px 8px #688184');
+				$('.self-announce-event').find('.event-content').css('cursor','auto');
+			});
+			</script>
+		<% end %>
+
 	</div>
 </div>
