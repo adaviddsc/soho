@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150208145519) do
+ActiveRecord::Schema.define(version: 20150209094024) do
 
   create_table "abilities", force: true do |t|
     t.integer  "user_id"
@@ -57,6 +57,36 @@ ActiveRecord::Schema.define(version: 20150208145519) do
   end
 
   add_index "experiences", ["user_id"], name: "index_experiences_on_self_id", using: :btree
+
+  create_table "job_browses", force: true do |t|
+    t.integer  "job_id"
+    t.string   "user"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "job_browses", ["job_id"], name: "index_job_browses_on_job_id", using: :btree
+
+  create_table "job_imgs", force: true do |t|
+    t.integer  "job_id"
+    t.integer  "order"
+    t.string   "image"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "job_imgs", ["job_id"], name: "index_job_imgs_on_job_id", using: :btree
+
+  create_table "jobs", force: true do |t|
+    t.integer  "user_id"
+    t.string   "workCategory"
+    t.text     "jobContent"
+    t.text     "jobDetail"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "jobs", ["user_id"], name: "index_jobs_on_user_id", using: :btree
 
   create_table "selves", force: true do |t|
     t.integer  "user_id"

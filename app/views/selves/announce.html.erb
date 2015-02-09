@@ -1,15 +1,28 @@
 <%= render "selves/selectBar" %>
-
-<div class="main-self-announce">
-	<% if params[:controller] == "ability" && ( params[:action] == "new" || params[:action] == "edit" ) %>
-		<%= form_for @ability, :url => { :controller => 'ability', :action => @ability_action }, :html => {:enctype => 'multipart/form-data'} do |f| %>
-			<%= render "selves/abilityEvents", :collection => f %>
+<% if is_controller_ability || params[:action] == "people" %>
+	<div class="main-self-announce">
+		<% if params[:action] == "new" || params[:action] == "edit" %>
+			<%= form_for @ability, :url => { :controller => 'ability', :action => @ability_action }, :html => {:enctype => 'multipart/form-data'} do |f| %>
+				<%= render "selves/abilityEvents", :collection => f %>
+			<% end %>
+		<% elsif params[:action] == "index" %>
+			<%= render "selves/abilityEvents"  %>
 		<% end %>
-	<% elsif params[:controller] == "ability" && params[:action] == "index" %>
-		<%= render "selves/abilityEvents"  %>
-	<% end %>
+	</div>
+<% end %>
 
-</div>
+<% if is_controller_job || params[:action] == "work" %>
+	<div class="main-self-announce">
+		<% if params[:action] == "new" || params[:action] == "edit" %>
+			<%= form_for @job, :url => { :controller => 'job', :action => @job_action }, :html => {:enctype => 'multipart/form-data'} do |f| %>
+				<%= render "selves/abilityEvents", :collection => f %>
+			<% end %>
+		<% elsif params[:action] == "index" %>
+			<%= render "selves/abilityEvents"  %>
+		<% end %>
+	</div>
+<% end %>
+
 <script>
 $(document).one("page:update", function(){
 	self_annocument_resize();

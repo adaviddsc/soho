@@ -13,7 +13,14 @@ Rails.application.routes.draw do
     end
 
     resources :experience
+    
     resources :ability do
+      collection do
+        post :browse
+      end
+    end
+
+    resources :job do
       collection do
         post :browse
       end
@@ -36,6 +43,13 @@ Rails.application.routes.draw do
     # ability#update
     # ability#edit
     # ability#destroy
+    # 
+    # job#index
+    # job#new
+    # job#create
+    # job#update
+    # job#edit
+    # job#destroy
     ##########used##########
   end
 

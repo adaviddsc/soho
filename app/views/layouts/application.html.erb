@@ -39,7 +39,7 @@
       </div>
       <ul class="dropdown-menu header-menu" role="menu" aria-labelledby="dLabel-header">
         <li><%= link_to t("find.people"), find_people_path %></li>
-        <li><%= link_to t("find.work"), '' %></li>
+        <li><%= link_to t("find.work"), find_work_path %></li>
         <li><%= link_to t("account.selfPage"), edit_self_path %></li>
         <li><a href="/users/edit"><%= t("account.editAccount") %></a></li>
         <li><a data-method="delete" href="/users/sign_out" rel="nofollow"><%= t("account.logout") %></a></li>

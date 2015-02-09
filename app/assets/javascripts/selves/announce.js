@@ -12,7 +12,7 @@ function self_annocument_resize(){
 
 function manage_order(){
 	order = 0;
-	$('.nested_ability_ability_imgs').each(function() {
+	$('.nested_fields').each(function() {
 		if ( $(this).css('display')!="none" ){
 			$(this).find('.nested-ability-order').attr("value",order);
 			order++;
@@ -20,7 +20,7 @@ function manage_order(){
     });
 }
 function remove_noImgUpload(){
-	$('.nested_ability_ability_imgs').each(function() {
+	$('.nested_fields').each(function() {
 		if( $(this).find('.announceImg-container').attr('src')==undefined ){
 			$(this).find('.nested-ability-remove').click();
 		}
@@ -47,18 +47,35 @@ function ability_event_bind(){
 	);
 
 	$(".event-content").on("click", function(event) {
-		$.ajax({
-		    url: "/self/ability/browse",
-		    data: "ability_id="+$(this).attr('ability-id'),
-		    type: "post",
-		    success: function(response) {
-		    	//alert(response);
-		    },
-		    error: function( req, status, err ) {
-		    	//console.log( 'something went wrong:', status, err );
-      			//alert('something went wrong:'+ status + err);
-		    }
-		});
+		if( $(this).attr('ability-id')!=undefined ){
+			$.ajax({
+			    url: "/self/ability/browse",
+			    data: "ability_id="+$(this).attr('ability-id'),
+			    type: "post",
+			    success: function(response) {
+			    	//alert(response);
+			    },
+			    error: function( req, status, err ) {
+			    	//console.log( 'something went wrong:', status, err );
+	      			//alert('something went wrong:'+ status + err);
+			    }
+			});
+		}
+		else if( $(this).attr('job-id')!=undefined ){
+			$.ajax({
+			    url: "/self/job/browse",
+			    data: "job_id="+$(this).attr('job-id'),
+			    type: "post",
+			    success: function(response) {
+			    	//alert(response);
+			    },
+			    error: function( req, status, err ) {
+			    	//console.log( 'something went wrong:', status, err );
+	      			//alert('something went wrong:'+ status + err);
+			    }
+			});
+		}
+
 		$('.self-announce-event').removeClass('active');
 		$(this).parents('.self-announce-event').addClass('active');
 		$('.announceImg-hide').hide();
@@ -66,7 +83,7 @@ function ability_event_bind(){
 	});
 }
 function remove_eventImg_btn(){
-	$(".nested_ability_ability_imgs").hover(
+	$(".nested_fields").hover(
 	  	function() {
 	    	$(this).find('.nested-ability-remove').animate({right:"0px"},200);
 	  	}, function() {
@@ -99,13 +116,13 @@ $(document).on("page:change", function(){
 		$('.add-ability-nested').click();
 		remove_eventImg_btn();
 		$('.nested-ability-image').unbind('change').on("change", function(event) {
-			parents_element = $(this).parents('.nested_ability_ability_imgs');
+			parents_element = $(this).parents('.nested_fields');
 			parents_element.append('<div class="announceImg"><img src="" class="announceImg-container"></div>');
 			readURL(this, parents_element.find('.announceImg-container') );
 			manage_order();
 		});
-		$('.nested_ability_ability_imgs').each(function(index) {
-			if ( $('.nested_ability_ability_imgs').length==index+1 ){
+		$('.nested_fields').each(function(index) {
+			if ( $('.nested_fields').length==index+1 ){
 				$(this).find('.nested-ability-image').click();
 			}
 	    });

@@ -1,5 +1,5 @@
-<div class="main-announce-left mCustomScrollbar" data-mcs-theme="rounded-dark">
-	<% if params[:controller] == "ability" && params[:action] != "index" %>
+<div class="main-announce-left mCustomScrollbar <% if is_controller_job || is_action_work %>float-right<% end %>" data-mcs-theme="rounded-dark">
+	<% if is_controller_ability_or_job && params[:action] != "index" %>
 
 		<div class="announceImg add-announceImg">
 			<div class="announceImg-camera">
@@ -7,20 +7,38 @@
 			</div>
 		</div>
 
-		<%= collection.nested_fields_for :ability_imgs do |nested_f| %>
-			<%= nested_f.remove_nested_fields_link raw('<i class="fa fa-times"></i>刪除'), class: 'nested-ability-remove' %>
-			<%= nested_f.file_field :image, class: 'hidden-fileInput nested-ability-image' %>
-			<%= nested_f.hidden_field :order, class: 'nested-ability-order' %>
+		<% if is_controller_ability %>
+			<%= collection.nested_fields_for :ability_imgs do |nested_f| %>
+				<%= nested_f.remove_nested_fields_link raw('<i class="fa fa-times"></i>刪除'), class: 'nested-ability-remove' %>
+				<%= nested_f.file_field :image, class: 'hidden-fileInput nested-ability-image' %>
+				<%= nested_f.hidden_field :order, class: 'nested-ability-order' %>
+			<% end %>
+			<%= collection.add_nested_fields_link :ability_imgs ,"新增圖片或影片", class: 'hidden-fileInput add-ability-nested' %>
+
+		<% elsif is_controller_job %>
+			<%= collection.nested_fields_for :job_imgs do |nested_f| %>
+				<%= nested_f.remove_nested_fields_link raw('<i class="fa fa-times"></i>刪除'), class: 'nested-ability-remove' %>
+				<%= nested_f.file_field :image, class: 'hidden-fileInput nested-ability-image' %>
+				<%= nested_f.hidden_field :order, class: 'nested-ability-order' %>
+			<% end %>
+			<%= collection.add_nested_fields_link :job_imgs ,"新增圖片或影片", class: 'hidden-fileInput add-ability-nested' %>
 		<% end %>
-		<%= collection.add_nested_fields_link :ability_imgs ,"新增圖片或影片", class: 'hidden-fileInput add-ability-nested' %>
 
 	<% end %>
 
 
-	<% if (params[:controller] == "ability" && params[:action] == "index") || params[:controller] == "find" %>
-		<% @ability_all.each do |abilities| %>
-			<% abilities.ability_imgs.each do |value| %>
+	<% if (is_controller_ability && params[:action] == "index") || is_action_people %>
+		<% @article_all.each do |article| %>
+			<% article.ability_imgs.each do |value| %>
 				<div class="announceImg-hide announceImg ability-event-<%= value.ability_id %>">
+					<img src="<%= value.image %>" class="announceImg-container" alt="">
+				</div>
+			<% end %>
+		<% end %>
+	<% elsif (is_controller_job && params[:action] == "index") || is_action_work %>
+		<% @article_all.each do |article| %>
+			<% article.job_imgs.each do |value| %>
+				<div class="announceImg-hide announceImg ability-event-<%= value.job_id %>">
 					<img src="<%= value.image %>" class="announceImg-container" alt="">
 				</div>
 			<% end %>
@@ -28,42 +46,57 @@
 	<% else %>
 		<script>
 		$(document).one("page:update", function(){
-			$('.nested_ability_ability_imgs').append('<div class="announceImg-hide announceImg"><img src="" class="announceImg-container" alt=""></div>');
+			$('.nested_fields').append('<div class="announceImg-hide announceImg"><img src="" class="announceImg-container" alt=""></div>');
 		});
 		</script>
-		<% @ability_all.each do |abilities| %>
-			<% abilities.ability_imgs.each_with_index do |value, index| %>
-				<% if value.ability_id == params[:id].to_i %>
-					<script>
-					$(document).one("page:update", function(){
-						$('.announceImg-container').eq(<%= index %>).attr('src','<%= value.image %>');
-					});
-					</script>
+
+		<% @article_all.each do |article| %>
+			<% if is_controller_ability %>
+				<% article.ability_imgs.each_with_index do |value, index| %>
+					<% if value.ability_id == params[:id].to_i %>
+						<script>
+						$(document).one("page:update", function(){
+							$('.announceImg-container').eq(<%= index %>).attr('src','<%= value.image %>');
+						});
+						</script>
+					<% end %>
+				<% end %>
+			<% elsif is_controller_job %>
+				<% article.job_imgs.each_with_index do |value, index| %>
+					<% if value.job_id == params[:id].to_i %>
+						<script>
+						$(document).one("page:update", function(){
+							$('.announceImg-container').eq(<%= index %>).attr('src','<%= value.image %>');
+						});
+						</script>
+					<% end %>
 				<% end %>
 			<% end %>
 		<% end %>
 	<% end %>
-
-
 </div>
-<div class="main-announce-right mCustomScrollbar" data-mcs-theme="rounded-dark">
+
+
+<div class="main-announce-right mCustomScrollbar <% if is_controller_job || is_action_work %>float-left<% end %>" data-mcs-theme="rounded-dark">
 	<% if params[:controller] == "find" && params[:action] == "people" %>
 		<div class="self-announce-header"><i class="fa fa-users self-ability-icn"></i>人才專欄</div>
 	<% elsif params[:controller] == "find" && params[:action] == "work" %>
+		<div class="self-announce-header"><i class="fa fa-thumb-tack self-ability-icn"></i>工作專欄</div>
+	<% elsif is_controller_ability %>
 		<div class="self-announce-header"><i class="fa fa-thumb-tack self-ability-icn"></i>個人專長欄</div>
-	<% else %>
-		<div class="self-announce-header"><i class="fa fa-thumb-tack self-ability-icn"></i>個人專長欄</div>
+	<% elsif is_controller_job%>
+		<div class="self-announce-header"><i class="fa fa-thumb-tack self-ability-icn"></i>個人徵才欄</div>
 	<% end %>
 	<div class="announce-middle">
 
-		<% if params[:controller] == "ability" && params[:action] != "index" %>
+		<% if is_controller_ability && params[:action] != "index" %>
 			<div class="self-announce-event">
 				<div class="event-title event-title-edit">
-					<% if params[:controller] == "ability" && params[:action] == "new" %>
-					<i class="fa fa-plus"></i>新增專長
-					<% elsif params[:controller] == "ability" && params[:action] == "edit" %>
-					<i class="fa fa-pencil-square-o"></i>編輯專長
-					<a data-confirm="確定刪除？" data-method="delete" href="/self/ability/<%= params[:id] %>" rel="nofollow"><i class="fa fa-trash"></i>刪除</a>
+					<% if is_controller_ability && params[:action] == "new" %>
+						<i class="fa fa-plus"></i>新增專長
+					<% elsif is_controller_ability && params[:action] == "edit" %>
+						<i class="fa fa-pencil-square-o"></i>編輯專長
+						<a data-confirm="確定刪除？" data-method="delete" href="/self/ability/<%= params[:id] %>" rel="nofollow"><i class="fa fa-trash"></i>刪除</a>
 					<% end %>
 				</div>
 				<div class="event-content add-event-content mCustomScrollbar" data-mcs-theme="rounded-dark">
@@ -78,40 +111,95 @@
 					<%= collection.submit "編輯", class: 'nested_ability_submit' %>
 				</div>
 			</div>
-		<% end %>
-
-		<% @ability_all.reverse.each_with_index do |value, index| %>
-			<% if params[:id].to_i!=value.id %>
+		<% elsif is_controller_job && params[:action] != "index" %>
 			<div class="self-announce-event">
-				<input type="hidden" class="ability-event-hidden" value="<%= value.id %>">
-				<div class="event-title">
-					<%= t("workCategory."+value.workCategory) %>
-					<% if value.user_id == current_user.id %>
-						<a data-confirm="確定刪除？" data-method="delete" href="/self/ability/<%= value.id %>" rel="nofollow"><i class="fa fa-trash"></i>刪除</a>
-						<a href="/self/ability/<%= value.id %>/edit"><i class="fa fa-pencil-square-o"></i>編輯</a>
+				<div class="event-title event-title-edit">
+					<% if is_controller_job && params[:action] == "new" %>
+						<i class="fa fa-plus"></i>新增徵才
+					<% elsif is_controller_job && params[:action] == "edit" %>
+						<i class="fa fa-pencil-square-o"></i>編輯徵才
+						<a data-confirm="確定刪除？" data-method="delete" href="/self/ability/<%= params[:id] %>" rel="nofollow"><i class="fa fa-trash"></i>刪除</a>
 					<% end %>
 				</div>
-				<div class="event-content mCustomScrollbar" data-mcs-theme="rounded-dark" ability-id="<%= value.id %>">
-					<%= simple_format(value.abilityContent) %>
-				</div>
-				<div class="event-bottom">
-					<div class="event-selfImg">
-						<%= image_tag(value.user.self.avatar, :class => "user-avatar") %><span class="user-name"><%= value.user.nickname %></span>
-					</div>
-					<div class="event-info">
-						<span><i class="glyphicon glyphicon-eye-open"></i><%= value.ability_browses.length %></span>
-						<span class="glyphicon glyphicon-arrow-up eventInfo-open"></span>
-					</div>
-				</div>
-				<div class="event-bottom-info">
-					<h1>備註事項</h1>
-					<span class="form-control mCustomScrollbar" data-mcs-theme="rounded-dark"><%= simple_format(value.abilityDetail) %></span>
+				<div class="event-content add-event-content mCustomScrollbar" data-mcs-theme="rounded-dark">
+					<h1 class="add-event-title">職業類型</h1>
+					<%= collection.select :workCategory, options_for_select([['網頁設計', 'web_design'], ['視覺設計', 'visual_design'], ['廣告設計', 'advertisement_design']], :selected => collection.object.workCategory) %>
+					<div class="event-line"></div>
+					<h1 class="add-event-title">徵才內容</h1>
+					<%= collection.text_area :jobContent, class: 'form-control' %>
+					<div class="event-line"></div>
+					<h1 class="add-event-title">備註事項(可以填上個人聯絡資訊,詳細需求等等......)</h1>
+					<%= collection.text_area :jobDetail, class: 'form-control' %>
+					<%= collection.submit "編輯", class: 'nested_ability_submit' %>
 				</div>
 			</div>
+		<% end %>
+
+
+
+		<% @article_all.reverse.each_with_index do |value, index| %>
+			<% if is_controller_ability || is_action_people %>
+				<% if params[:id].to_i!=value.id %>
+					<div class="self-announce-event">
+						<input type="hidden" class="ability-event-hidden" value="<%= value.id %>">
+						<div class="event-title">
+							<%= t("workCategory."+value.workCategory) %>
+							<% if value.user_id == current_user.id %>
+								<a data-confirm="確定刪除？" data-method="delete" href="/self/ability/<%= value.id %>" rel="nofollow"><i class="fa fa-trash"></i>刪除</a>
+								<a href="/self/ability/<%= value.id %>/edit"><i class="fa fa-pencil-square-o"></i>編輯</a>
+							<% end %>
+						</div>
+						<div class="event-content mCustomScrollbar" data-mcs-theme="rounded-dark" ability-id="<%= value.id %>">
+							<%= simple_format(value.abilityContent) %>
+						</div>
+						<div class="event-bottom">
+							<div class="event-selfImg">
+								<%= image_tag(value.user.self.avatar, :class => "user-avatar") %><span class="user-name"><%= value.user.nickname %></span>
+							</div>
+							<div class="event-info">
+								<span><i class="glyphicon glyphicon-eye-open"></i><%= value.ability_browses.length %></span>
+								<span class="glyphicon glyphicon-arrow-up eventInfo-open"></span>
+							</div>
+						</div>
+						<div class="event-bottom-info">
+							<h1>備註事項</h1>
+							<span class="form-control mCustomScrollbar" data-mcs-theme="rounded-dark"><%= simple_format(value.abilityDetail) %></span>
+						</div>
+					</div>
+				<% end %>
+			<% elsif is_controller_job || is_action_work %>
+				<% if params[:id].to_i!=value.id %>
+					<div class="self-announce-event">
+						<input type="hidden" class="ability-event-hidden" value="<%= value.id %>">
+						<div class="event-title">
+							<%= t("workCategory."+value.workCategory) %>
+							<% if value.user_id == current_user.id %>
+								<a data-confirm="確定刪除？" data-method="delete" href="/self/job/<%= value.id %>" rel="nofollow"><i class="fa fa-trash"></i>刪除</a>
+								<a href="/self/job/<%= value.id %>/edit"><i class="fa fa-pencil-square-o"></i>編輯</a>
+							<% end %>
+						</div>
+						<div class="event-content mCustomScrollbar" data-mcs-theme="rounded-dark" job-id="<%= value.id %>">
+							<%= simple_format(value.jobContent) %>
+						</div>
+						<div class="event-bottom">
+							<div class="event-selfImg">
+								<%= image_tag(value.user.self.avatar, :class => "user-avatar") %><span class="user-name"><%= value.user.nickname %></span>
+							</div>
+							<div class="event-info">
+								<span><i class="glyphicon glyphicon-eye-open"></i><%= value.job_browses.length %></span>
+								<span class="glyphicon glyphicon-arrow-up eventInfo-open"></span>
+							</div>
+						</div>
+						<div class="event-bottom-info">
+							<h1>備註事項</h1>
+							<span class="form-control mCustomScrollbar" data-mcs-theme="rounded-dark"><%= simple_format(value.jobDetail) %></span>
+						</div>
+					</div>
+				<% end %>
 			<% end %>
 		<% end %>
 
-		<% if (params[:controller] == "ability" && params[:action] == "index") || params[:controller] == "find" %>
+		<% if (is_controller_ability_or_job && params[:action] == "index") || params[:controller] == "find" %>
 			<script>
 			$(document).one("page:update", function(){
 				ability_event_bind();
