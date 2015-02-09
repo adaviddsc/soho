@@ -1,10 +1,12 @@
 class AbilityController < ApplicationController
   def index
+    @ability_all = current_user.abilities
   	render :template => "selves/announce"
   end
 
   def new
   	@ability = Ability.new
+    @ability_all = current_user.abilities
     @ability_action = "create"
   	render :template => "selves/announce"
   end
@@ -20,6 +22,7 @@ class AbilityController < ApplicationController
 
   def edit
     @ability = Ability.find(params[:id])
+    @ability_all = current_user.abilities
     if @ability.user_id == current_user.id
       @ability_action = "update"
       render :template => "selves/announce"

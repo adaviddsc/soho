@@ -72,9 +72,9 @@ body {
 	@include border-top-right-radius(5px);
 	width: 500px;
 	height: 25px;
-	background: #70CA4B;
+	background: #2F8386;
 	position: fixed;
-	color: #000;
+	color: #fff;
 	padding: 4px 7px;
 	font-size: 18px;
 	cursor: pointer;
@@ -82,7 +82,6 @@ body {
 	left: 50px;
 	z-index: 2;
 	font-size: 18px !important;
-	opacity: .7;
 }
 .announce{
 	width: 500px;
@@ -107,6 +106,58 @@ body {
 	}
 	
 }
+.home-find{
+	position: fixed;
+	top: 400px;
+	z-index: 2;
+	left: 0;
+	right: 0;
+	width: 680px;
+	margin: auto;
+	.find-hover{
+		color: #fff;
+		font-size: 130px !important;
+		text-align: center;
+		cursor: pointer;
+		@include transition(all .2s linear);
+		.find-people-btn{
+			width: 300px;
+			height: 80px;
+			border: 3px solid #FFF;
+			color: #fff;
+			font-size: 34px;
+			line-height: 75px;
+			text-align: center;
+			letter-spacing: 5px;
+			margin-top: 25px;
+			@include transition(all .2s linear);
+			span{
+				//@include transition(all .2s linear);
+				i{
+					margin-right: 10px;
+				}
+			}
+		}
+		&:hover{
+			text-shadow: 0 7px 10px #000;
+			.find-people-btn{
+				background:#49989B;
+				text-shadow:none;
+			}
+		}
+	}
+	.fa-users{
+		margin-right: 35px;
+	}
+	.fa-briefcase{
+		margin-left: 35px;
+		font-size: 135px !important;
+		.find-people-btn{
+			margin-top: 16px;
+		}
+	}
+}
+
 .main-home{
 	z-index: 1;
 	height: 100vh;

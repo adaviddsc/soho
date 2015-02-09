@@ -84,4 +84,15 @@ $(document).on("page:change", function(){
   });
 
 
+  $(".find-people").hover(function(){
+    $(this).find('.find-people-btn').html('<span><i class="fa fa-hand-o-up"></i>進入</span>');
+  }, function() {
+    $(this).find('.find-people-btn').html('<span>尋找人才</span>');
+  });
+
+  $(".find-work").hover(function(){
+    $(this).find('.find-people-btn').html('<span><i class="fa fa-hand-o-up"></i>進入</span>');
+  }, function() {
+    $(this).find('.find-people-btn').html('<span>尋找工作</span>');
+  });
 });

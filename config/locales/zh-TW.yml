@@ -36,6 +36,9 @@ zh-TW:
     case: "外包"
     intern: "實習"
 
+  find:
+    people: "尋找人才"
+    work: "尋找工作"
 
   date:
     abbr_day_names:

@@ -17,8 +17,8 @@
 	<% end %>
 
 
-	<% if params[:controller] == "ability" && params[:action] == "index" %>
-		<% current_user.abilities.each do |abilities| %>
+	<% if (params[:controller] == "ability" && params[:action] == "index") || params[:controller] == "find" %>
+		<% @ability_all.each do |abilities| %>
 			<% abilities.ability_imgs.each do |value| %>
 				<div class="announceImg-hide announceImg ability-event-<%= value.ability_id %>">
 					<img src="<%= value.image %>" class="announceImg-container" alt="">
@@ -31,7 +31,7 @@
 			$('.nested_ability_ability_imgs').append('<div class="announceImg-hide announceImg"><img src="" class="announceImg-container" alt=""></div>');
 		});
 		</script>
-		<% current_user.abilities.each do |abilities| %>
+		<% @ability_all.each do |abilities| %>
 			<% abilities.ability_imgs.each_with_index do |value, index| %>
 				<% if value.ability_id == params[:id].to_i %>
 					<script>
@@ -47,7 +47,13 @@
 
 </div>
 <div class="main-announce-right mCustomScrollbar" data-mcs-theme="rounded-dark">
-	<div class="self-announce-header"><i class="fa fa-thumb-tack self-ability-icn"></i>個人專長欄</div>
+	<% if params[:controller] == "find" && params[:action] == "people" %>
+		<div class="self-announce-header"><i class="fa fa-users self-ability-icn"></i>人才專欄</div>
+	<% elsif params[:controller] == "find" && params[:action] == "work" %>
+		<div class="self-announce-header"><i class="fa fa-thumb-tack self-ability-icn"></i>個人專長欄</div>
+	<% else %>
+		<div class="self-announce-header"><i class="fa fa-thumb-tack self-ability-icn"></i>個人專長欄</div>
+	<% end %>
 	<div class="announce-middle">
 
 		<% if params[:controller] == "ability" && params[:action] != "index" %>
@@ -74,21 +80,23 @@
 			</div>
 		<% end %>
 
-		<% current_user.abilities.each_with_index do |value, index| %>
+		<% @ability_all.reverse.each_with_index do |value, index| %>
 			<% if params[:id].to_i!=value.id %>
 			<div class="self-announce-event">
 				<input type="hidden" class="ability-event-hidden" value="<%= value.id %>">
 				<div class="event-title">
 					<%= t("workCategory."+value.workCategory) %>
-					<a data-confirm="確定刪除？" data-method="delete" href="/self/ability/<%= value.id %>" rel="nofollow"><i class="fa fa-trash"></i>刪除</a>
-					<a href="/self/ability/<%= value.id %>/edit"><i class="fa fa-pencil-square-o"></i>編輯</a>
+					<% if value.user_id == current_user.id %>
+						<a data-confirm="確定刪除？" data-method="delete" href="/self/ability/<%= value.id %>" rel="nofollow"><i class="fa fa-trash"></i>刪除</a>
+						<a href="/self/ability/<%= value.id %>/edit"><i class="fa fa-pencil-square-o"></i>編輯</a>
+					<% end %>
 				</div>
 				<div class="event-content mCustomScrollbar" data-mcs-theme="rounded-dark" ability-id="<%= value.id %>">
 					<%= simple_format(value.abilityContent) %>
 				</div>
 				<div class="event-bottom">
 					<div class="event-selfImg">
-						<%= image_tag(current_user.self.avatar, :class => "user-avatar") %><span class="user-name"><%= current_user.nickname %></span>
+						<%= image_tag(value.user.self.avatar, :class => "user-avatar") %><span class="user-name"><%= value.user.nickname %></span>
 					</div>
 					<div class="event-info">
 						<span><i class="glyphicon glyphicon-eye-open"></i><%= value.ability_browses.length %></span>
@@ -103,7 +111,7 @@
 			<% end %>
 		<% end %>
 
-		<% if params[:controller] == "ability" && params[:action] == "index" %>
+		<% if (params[:controller] == "ability" && params[:action] == "index") || params[:controller] == "find" %>
 			<script>
 			$(document).one("page:update", function(){
 				ability_event_bind();
