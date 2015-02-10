@@ -118,6 +118,7 @@ $(document).on("page:change", function(){
 		$('.nested-ability-image').unbind('change').on("change", function(event) {
 			parents_element = $(this).parents('.nested_fields');
 			parents_element.append('<div class="announceImg"><img src="" class="announceImg-container"></div>');
+			parents_element.find('.announceImg-hide').remove();
 			readURL(this, parents_element.find('.announceImg-container') );
 			manage_order();
 		});

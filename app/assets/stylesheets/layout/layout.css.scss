@@ -112,7 +112,7 @@ body {
 	z-index: 2;
 	left: 0;
 	right: 0;
-	width: 680px;
+	width: 620px;
 	margin: auto;
 	.find-hover{
 		color: #fff;
@@ -121,18 +121,17 @@ body {
 		cursor: pointer;
 		@include transition(all .2s linear);
 		.find-people-btn{
-			width: 300px;
-			height: 80px;
+			width: 270px;
+			height: 70px;
 			border: 3px solid #FFF;
 			color: #fff;
-			font-size: 34px;
-			line-height: 75px;
+			font-size: 30px;
+			line-height: 63px;
 			text-align: center;
 			letter-spacing: 5px;
 			margin-top: 25px;
 			@include transition(all .2s linear);
 			span{
-				//@include transition(all .2s linear);
 				i{
 					margin-right: 10px;
 				}
@@ -141,8 +140,10 @@ body {
 		&:hover{
 			text-shadow: 0 7px 10px #000;
 			.find-people-btn{
-				background:#49989B;
-				text-shadow:none;
+				background: #000;
+				text-shadow: none;
+				opacity: .8;
+				border: 3px solid #000;
 			}
 		}
 	}

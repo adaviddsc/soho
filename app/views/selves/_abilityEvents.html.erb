@@ -7,27 +7,31 @@
 			</div>
 		</div>
 
-		<% if is_controller_ability %>
-			<%= collection.nested_fields_for :ability_imgs do |nested_f| %>
-				<%= nested_f.remove_nested_fields_link raw('<i class="fa fa-times"></i>刪除'), class: 'nested-ability-remove' %>
-				<%= nested_f.file_field :image, class: 'hidden-fileInput nested-ability-image' %>
-				<%= nested_f.hidden_field :order, class: 'nested-ability-order' %>
-			<% end %>
-			<%= collection.add_nested_fields_link :ability_imgs ,"新增圖片或影片", class: 'hidden-fileInput add-ability-nested' %>
+		<div class="drag-drop">
+			<% if is_controller_ability %>
+				<%= collection.nested_fields_for :ability_imgs do |nested_f| %>
+					<%= nested_f.remove_nested_fields_link raw('<i class="fa fa-times"></i>刪除'), class: 'nested-ability-remove' %>
+					<%= nested_f.file_field :image, class: 'hidden-fileInput nested-ability-image' %>
+					<%= nested_f.hidden_field :order, class: 'nested-ability-order' %>
+				<% end %>
 
-		<% elsif is_controller_job %>
-			<%= collection.nested_fields_for :job_imgs do |nested_f| %>
-				<%= nested_f.remove_nested_fields_link raw('<i class="fa fa-times"></i>刪除'), class: 'nested-ability-remove' %>
-				<%= nested_f.file_field :image, class: 'hidden-fileInput nested-ability-image' %>
-				<%= nested_f.hidden_field :order, class: 'nested-ability-order' %>
+				<%= collection.add_nested_fields_link :ability_imgs ,"新增圖片或影片", class: 'hidden-fileInput add-ability-nested' %>
+
+			<% elsif is_controller_job %>
+				<%= collection.nested_fields_for :job_imgs do |nested_f| %>
+					<%= nested_f.remove_nested_fields_link raw('<i class="fa fa-times"></i>刪除'), class: 'nested-ability-remove' %>
+					<%= nested_f.file_field :image, class: 'hidden-fileInput nested-ability-image' %>
+					<%= nested_f.hidden_field :order, class: 'nested-ability-order' %>
+				<% end %>
+				<%= collection.add_nested_fields_link :job_imgs ,"新增圖片或影片", class: 'hidden-fileInput add-ability-nested' %>
 			<% end %>
-			<%= collection.add_nested_fields_link :job_imgs ,"新增圖片或影片", class: 'hidden-fileInput add-ability-nested' %>
-		<% end %>
+		</div>
 
 	<% end %>
 
 
 	<% if (is_controller_ability && params[:action] == "index") || is_action_people %>
+		<div class=""></div>
 		<% @article_all.each do |article| %>
 			<% article.ability_imgs.each do |value| %>
 				<div class="announceImg-hide announceImg ability-event-<%= value.ability_id %>">
@@ -46,7 +50,7 @@
 	<% else %>
 		<script>
 		$(document).one("page:update", function(){
-			$('.nested_fields').append('<div class="announceImg-hide announceImg"><img src="" class="announceImg-container" alt=""></div>');
+			$('.nested_fields').append('<div class="announceImg-hide announceImg 66aa"><img src="" class="announceImg-container" alt=""></div>');
 		});
 		</script>
 
@@ -56,7 +60,8 @@
 					<% if value.ability_id == params[:id].to_i %>
 						<script>
 						$(document).one("page:update", function(){
-							$('.announceImg-container').eq(<%= index %>).attr('src','<%= value.image %>');
+							$('.nested_fields').eq(<%= index %>).find('.announceImg-container').attr('src','<%= value.image %>');
+							$('.nested_fields').eq(<%= index %>).attr('order',<%= value.order %>);
 						});
 						</script>
 					<% end %>
@@ -66,15 +71,43 @@
 					<% if value.job_id == params[:id].to_i %>
 						<script>
 						$(document).one("page:update", function(){
-							$('.announceImg-container').eq(<%= index %>).attr('src','<%= value.image %>');
+							$('.nested_fields').eq(<%= index %>).find('.announceImg-container').attr('src','<%= value.image %>');
+							$('.nested_fields').eq(<%= index %>).attr('order',<%= value.order %>);
+
+							$('.nested_fields').eq(<%= index %>).find('.announceImg-container').attr('src','<%= value.image %>');
+							$('.nested_fields').eq(<%= index %>).attr('order',<%= value.order %>);
 						});
 						</script>
 					<% end %>
 				<% end %>
 			<% end %>
 		<% end %>
+
+		<script>
+			$(document).one("page:update", function(){
+				$('.nested_fields').addClass('will-remove');
+				nested_lendth = $('.will-remove').length;
+				for(i=nested_lendth-1;i>=0;i-- ){
+					$('.will-remove').each(function() {
+						if( $(this).attr('order')==i ){
+							$(this).clone().removeClass('will-remove').prependTo('.drag-drop');
+						}
+			    	});
+				}
+				$('.will-remove').remove();
+				remove_eventImg_btn();
+			});
+		</script>
 	<% end %>
 </div>
+
+<script>
+    $(function () {
+        $(".drag-drop").sortable({
+        	connectWith: "div"
+        });
+    });
+</script>
 
 
 <div class="main-announce-right mCustomScrollbar <% if is_controller_job || is_action_work %>float-left<% end %>" data-mcs-theme="rounded-dark">
