@@ -1,0 +1,8 @@
+
+<%= render "selves/selfInfo", :locals => { :user => @user } %>
+
+<script>
+$(document).one("page:update", function(){
+	screen_height_resize();
+});
+</script>

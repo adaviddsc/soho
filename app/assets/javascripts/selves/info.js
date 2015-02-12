@@ -32,4 +32,13 @@ $(document).on("page:change", function(){
 	$(".edit-avatarInput").on("change", function(event) {
 		readURL(this, $(".edit-avatarImg") );
 	});
+
+	$(".bgimg-btn").on("click", function(event) {
+		$(".bgimg-input").click();
+	});
+	$(".bgimg-input").on("change", function(event) {
+		$(".bgimg-form").submit();
+	});
+
+	
 });

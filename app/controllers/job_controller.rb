@@ -52,6 +52,16 @@ class JobController < ApplicationController
     end
   end
 
+  def focus
+    focus = JobFocus.find_by(:job_id => params[:job_id], :user => current_user.email)
+    if focus.nil? && current_user
+      JobFocus.new(:job_id => params[:job_id], :user => current_user.email).save
+    else
+      focus.destroy
+    end
+    render :text => 'success'
+  end
+
 private
   def job_params
   	params.require(:job).permit(:user_id, :workCategory, :jobContent, :jobDetail, job_imgs_attributes: [:id, :order, :image, :_destroy])

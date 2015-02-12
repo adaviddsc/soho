@@ -112,9 +112,31 @@
 
 <div class="main-announce-right mCustomScrollbar <% if is_controller_job || is_action_work %>float-left<% end %>" data-mcs-theme="rounded-dark">
 	<% if params[:controller] == "find" && params[:action] == "people" %>
-		<div class="self-announce-header"><i class="fa fa-users self-ability-icn"></i>人才專欄</div>
+		<div class="self-announce-header">
+			<i class="fa fa-users self-ability-icn"></i>人才專欄
+			<div class="filter-focus">
+				過濾器
+				<select>
+					<option value="none">無</option>
+					<option value="focused">已關注</option>
+					<option value="browsed">已讀</option>
+					<option value="nobrowse">未讀</option>
+				</select>
+			</div>
+		</div>
 	<% elsif params[:controller] == "find" && params[:action] == "work" %>
-		<div class="self-announce-header"><i class="fa fa-thumb-tack self-ability-icn"></i>工作專欄</div>
+		<div class="self-announce-header">
+			<i class="fa fa-thumb-tack self-ability-icn"></i>工作專欄
+			<div class="filter-focus">
+				過濾器
+				<select>
+					<option value="none">無</option>
+					<option value="focused">已關注</option>
+					<option value="browsed">已讀</option>
+					<option value="nobrowse">未讀</option>
+				</select>
+			</div>
+		</div>
 	<% elsif is_controller_ability %>
 		<div class="self-announce-header"><i class="fa fa-thumb-tack self-ability-icn"></i>個人專長欄</div>
 	<% elsif is_controller_job%>
@@ -173,22 +195,32 @@
 		<% @article_all.reverse.each_with_index do |value, index| %>
 			<% if is_controller_ability || is_action_people %>
 				<% if params[:id].to_i!=value.id %>
-					<div class="self-announce-event">
+					<div class="self-announce-event <% if focused = find_abilityFocus(value.id,current_user.email) %>focused<% end %> <% if focused = find_abilityBrowse(value.id,current_user.email) %>browsed<% end %>">
 						<input type="hidden" class="ability-event-hidden" value="<%= value.id %>">
 						<div class="event-title">
 							<%= t("workCategory."+value.workCategory) %>
 							<% if value.user_id == current_user.id %>
 								<a data-confirm="確定刪除？" data-method="delete" href="/self/ability/<%= value.id %>" rel="nofollow"><i class="fa fa-trash"></i>刪除</a>
 								<a href="/self/ability/<%= value.id %>/edit"><i class="fa fa-pencil-square-o"></i>編輯</a>
+							<% else %>
+								<% if focused %>
+									<span class="event-onfocus" ability-id="<%= value.id %>"><i class="fa fa-tags"></i></span>
+									<span class="event-focus focus-hide" ability-id="<%= value.id %>"><i class="fa fa-tag"></i>關注</span>
+								<% else %>
+									<span class="event-onfocus focus-hide" ability-id="<%= value.id %>"><i class="fa fa-tags"></i></span>
+									<span class="event-focus" ability-id="<%= value.id %>"><i class="fa fa-tag"></i>關注</span>
+								<% end %>
 							<% end %>
 						</div>
 						<div class="event-content mCustomScrollbar" data-mcs-theme="rounded-dark" ability-id="<%= value.id %>">
 							<%= simple_format(value.abilityContent) %>
 						</div>
 						<div class="event-bottom">
-							<div class="event-selfImg">
-								<%= image_tag(value.user.self.avatar, :class => "user-avatar") %><span class="user-name"><%= value.user.nickname %></span>
-							</div>
+							<a href="/userinfo/info/<%= value.user_id %>">
+								<div class="event-selfImg">
+									<%= image_tag(value.user.self.avatar, :class => "user-avatar") %><span class="user-name"><%= value.user.nickname %></span>
+								</div>
+							</a>
 							<div class="event-info">
 								<span><i class="glyphicon glyphicon-eye-open"></i><%= value.ability_browses.length %></span>
 								<span class="glyphicon glyphicon-arrow-up eventInfo-open"></span>
@@ -202,22 +234,32 @@
 				<% end %>
 			<% elsif is_controller_job || is_action_work %>
 				<% if params[:id].to_i!=value.id %>
-					<div class="self-announce-event">
+					<div class="self-announce-event <% if focused = find_jobFocus(value.id,current_user.email) %>focused<% end %> <% if focused = find_jobBrowse(value.id,current_user.email) %>browsed<% end %>">
 						<input type="hidden" class="ability-event-hidden" value="<%= value.id %>">
 						<div class="event-title">
 							<%= t("workCategory."+value.workCategory) %>
 							<% if value.user_id == current_user.id %>
 								<a data-confirm="確定刪除？" data-method="delete" href="/self/job/<%= value.id %>" rel="nofollow"><i class="fa fa-trash"></i>刪除</a>
 								<a href="/self/job/<%= value.id %>/edit"><i class="fa fa-pencil-square-o"></i>編輯</a>
+							<% else %>
+								<% if focused %>
+									<span class="event-onfocus" job-id="<%= value.id %>"><i class="fa fa-tags"></i></span>
+									<span class="event-focus focus-hide" job-id="<%= value.id %>"><i class="fa fa-tag"></i>關注</span>
+								<% else %>
+									<span class="event-onfocus focus-hide" job-id="<%= value.id %>"><i class="fa fa-tags"></i></span>
+									<span class="event-focus" job-id="<%= value.id %>"><i class="fa fa-tag"></i>關注</span>
+								<% end %>
 							<% end %>
 						</div>
 						<div class="event-content mCustomScrollbar" data-mcs-theme="rounded-dark" job-id="<%= value.id %>">
 							<%= simple_format(value.jobContent) %>
 						</div>
 						<div class="event-bottom">
-							<div class="event-selfImg">
-								<%= image_tag(value.user.self.avatar, :class => "user-avatar") %><span class="user-name"><%= value.user.nickname %></span>
-							</div>
+							<a href="/userinfo/info/<%= value.user_id %>">
+								<div class="event-selfImg">
+									<%= image_tag(value.user.self.avatar, :class => "user-avatar") %><span class="user-name"><%= value.user.nickname %></span>
+								</div>
+							</a>
 							<div class="event-info">
 								<span><i class="glyphicon glyphicon-eye-open"></i><%= value.job_browses.length %></span>
 								<span class="glyphicon glyphicon-arrow-up eventInfo-open"></span>

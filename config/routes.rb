@@ -10,19 +10,23 @@ Rails.application.routes.draw do
   resource :self do
     collection do
       get :privicy
+      patch :bgimg
+      patch :privicy_update
     end
 
     resources :experience
-    
+
     resources :ability do
       collection do
         post :browse
+        post :focus
       end
     end
 
     resources :job do
       collection do
         post :browse
+        post :focus
       end
     end
 
@@ -55,6 +59,8 @@ Rails.application.routes.draw do
 
   get 'find/people'
   get 'find/work'
+  get 'userinfo/info/:id', :to => 'userinfo#info'
+  get 'userinfo/experience/:id', :to => 'userinfo#experience'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

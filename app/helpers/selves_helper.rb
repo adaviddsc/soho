@@ -38,4 +38,8 @@ module SelvesHelper
       return false
     end
   end
+
+  def self_img
+    @self_bgimg = Self.find_by(user_id: current_user.id)
+  end
 end

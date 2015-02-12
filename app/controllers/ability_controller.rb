@@ -52,6 +52,16 @@ class AbilityController < ApplicationController
     end
   end
 
+  def focus
+    focus = AbilityFocus.find_by(:ability_id => params[:ability_id], :user => current_user.email)
+    if focus.nil? && current_user
+      AbilityFocus.new(:ability_id => params[:ability_id], :user => current_user.email).save
+    else
+      focus.destroy
+    end
+    render :text => 'success'
+  end
+
 private
   def ability_params
   	params.require(:ability).permit(:user_id, :workCategory, :abilityContent, :abilityDetail, ability_imgs_attributes: [:id, :order, :image, :_destroy])

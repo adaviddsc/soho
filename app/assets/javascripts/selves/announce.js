@@ -46,6 +46,92 @@ function ability_event_bind(){
 	  	}
 	);
 
+	$(".filter-focus select").change(function () {
+		if( $(".filter-focus select :selected").val()=="focused" ){
+			$(".self-announce-event").hide();
+			$(".focused").fadeIn();
+		}
+		else if( $(".filter-focus select :selected").val()=="none" ){
+			$(".self-announce-event").fadeIn();
+		}
+		else if( $(".filter-focus select :selected").val()=="browsed" ){
+			$(".self-announce-event").hide();
+			$(".browsed").fadeIn();
+		}
+		else if( $(".filter-focus select :selected").val()=="nobrowse" ){
+			$(".self-announce-event").fadeIn();
+			$(".browsed").hide();
+		}
+	});
+
+	$(".event-focus").on("click", function(event) {
+		event_focus = $(this);
+		event_onfocus = $(this).siblings('.event-onfocus');
+		if( $(this).attr('ability-id')!=undefined ){
+			$.ajax({
+			    url: "/self/ability/focus",
+			    data: "ability_id="+$(this).attr('ability-id'),
+			    type: "post",
+			    success: function(response) {
+			    	event_focus.parents('.self-announce-event').addClass('focused');
+			    	event_focus.hide();
+			    	event_onfocus.show();
+			    },
+			    error: function( req, status, err ) {
+			    }
+			});
+		}
+		else if( $(this).attr('job-id')!=undefined ){
+			$.ajax({
+			    url: "/self/job/focus",
+			    data: "job_id="+$(this).attr('job-id'),
+			    type: "post",
+			    success: function(response) {
+			    	event_focus.parents('.self-announce-event').addClass('focused');
+			    	event_focus.hide();
+			    	event_onfocus.show();
+			    },
+			    error: function( req, status, err ) {
+			    }
+			});
+
+		}
+	});
+
+	$(".event-onfocus").on("click", function(event) {
+		event_focus = $(this).siblings('.event-focus');
+		event_onfocus = $(this);
+		if( $(this).attr('ability-id')!=undefined ){
+			$.ajax({
+			    url: "/self/ability/focus",
+			    data: "ability_id="+$(this).attr('ability-id'),
+			    type: "post",
+			    success: function(response) {
+			    	event_focus.parents('.self-announce-event').removeClass('focused');
+			    	event_onfocus.hide();
+			    	event_focus.show();
+			    },
+			    error: function( req, status, err ) {
+			    }
+			});
+		}
+		else if( $(this).attr('job-id')!=undefined ){
+			$.ajax({
+			    url: "/self/job/focus",
+			    data: "job_id="+$(this).attr('job-id'),
+			    type: "post",
+			    success: function(response) {
+			    	event_focus.parents('.self-announce-event').removeClass('focused');
+			    	event_onfocus.hide();
+			    	event_focus.show();
+			    },
+			    error: function( req, status, err ) {
+			    }
+			});
+
+		}
+	});
+
 	$(".event-content").on("click", function(event) {
 		if( $(this).attr('ability-id')!=undefined ){
 			$.ajax({

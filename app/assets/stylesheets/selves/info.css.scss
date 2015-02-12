@@ -48,9 +48,6 @@
 	position: relative;
 	top: 60px;
 	width: 100%;
-	background: url(/assets/mt-cook.jpg);
-	@include background-size(cover);
-
 	.main-info-frame{
 		width: 960px;
 		margin: 0 auto;
@@ -335,12 +332,21 @@
 						select{
 							margin-left: 40px;
 						}
-						/*textarea{
-							width: 400px;
-							height: 150px;
-							resize: none;
-							margin: 0 0 35px 110px;
-						}*/
+						input[type=submit]{
+							@include transition(all .2s linear);
+							@include border-radius(5px);
+							padding: 5px 8px;
+							border: none;
+							margin: 20px 40px 20px;
+							display: block;
+							background: #5AB8D3;
+							border-bottom: 2px solid #1D91A0;
+							width: 200px;
+							color: #fff;
+							&:hover{
+								background: #1D91A0;
+							}
+						}
 					}
 				}
 			}

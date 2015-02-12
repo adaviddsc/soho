@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150209094024) do
+ActiveRecord::Schema.define(version: 20150211065340) do
 
   create_table "abilities", force: true do |t|
     t.integer  "user_id"
@@ -33,6 +33,15 @@ ActiveRecord::Schema.define(version: 20150209094024) do
 
   add_index "ability_browses", ["ability_id"], name: "index_ability_browses_on_ability_id", using: :btree
 
+  create_table "ability_focus", force: true do |t|
+    t.integer  "ability_id"
+    t.string   "user"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "ability_focus", ["ability_id"], name: "index_ability_focus_on_ability_id", using: :btree
+
   create_table "ability_imgs", force: true do |t|
     t.integer  "ability_id"
     t.integer  "order"
@@ -46,17 +55,22 @@ ActiveRecord::Schema.define(version: 20150209094024) do
   create_table "experiences", force: true do |t|
     t.integer  "user_id"
     t.string   "workCompany"
+    t.integer  "workCompany_privicy"
     t.date     "workStart"
     t.date     "workEnd"
+    t.integer  "workStartEnd_privicy"
     t.integer  "workSalary"
+    t.integer  "workSalary_privicy"
     t.string   "workCategory"
     t.string   "workStyle"
+    t.integer  "workStyle_privicy"
     t.text     "workExperience"
+    t.integer  "workExperience_privicy"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "experiences", ["user_id"], name: "index_experiences_on_self_id", using: :btree
+  add_index "experiences", ["user_id"], name: "index_experiences_on_user_id", using: :btree
 
   create_table "job_browses", force: true do |t|
     t.integer  "job_id"
@@ -66,6 +80,15 @@ ActiveRecord::Schema.define(version: 20150209094024) do
   end
 
   add_index "job_browses", ["job_id"], name: "index_job_browses_on_job_id", using: :btree
+
+  create_table "job_focus", force: true do |t|
+    t.integer  "job_id"
+    t.string   "user"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "job_focus", ["job_id"], name: "index_job_focus_on_job_id", using: :btree
 
   create_table "job_imgs", force: true do |t|
     t.integer  "job_id"
@@ -91,13 +114,21 @@ ActiveRecord::Schema.define(version: 20150209094024) do
   create_table "selves", force: true do |t|
     t.integer  "user_id"
     t.string   "avatar"
+    t.string   "bgimg"
     t.string   "name"
+    t.integer  "name_privicy"
     t.string   "cellphone"
+    t.integer  "cellphone_privicy"
     t.string   "sex"
+    t.integer  "sex_privicy"
     t.date     "birth"
+    t.integer  "birth_privicy"
     t.string   "marriage"
+    t.integer  "marriage_privicy"
     t.string   "workStatus"
+    t.integer  "workStatus_privicy"
     t.string   "education"
+    t.integer  "education_privicy"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
